@@ -1,0 +1,23 @@
+head = import('@components/admin/head');
+aside = import('@components/admin/aside');
+nav = import('@components/admin/nav');
+
+meta = ({
+    async: false, id: "admin",
+    permissions: { level: 0, intent: "admin" }
+});
+
+data = (req, layout) => (
+    <>
+        ${head(layout.meta.document || meta.document)}
+        <body class="bg-black text-gray-100 h-screen w-screen overflow-x-hidden relative">
+            ${aside(req)}
+            ${nav()}
+            <main class="relative ml-20 w-full h-screen overflow-y-auto pt-20 p-4 pr-24">
+                ${layout.content}
+            </main>
+        </body>
+    </>
+);
+
+module.exports = { meta, data };

@@ -1,0 +1,15 @@
+meta = ({
+    id: "index", async: false, layout: "client",
+    document: { title: "Game Hosting | Premium Servers", description: "Premium game server hosting with high performance and reliability" },
+    permissions: { level: 0, intent: "home" }
+});
+
+data = (req) => (
+    <>
+        <div class="w-full px-4 z-0">
+            <h1 class="text-zinc-200 text-xl">Coming soon. Come back later!</h1>
+        </div>
+    </>
+)
+
+module.exports = { meta, data };

@@ -1,0 +1,188 @@
+meta = ({
+    id: "index", async: false, layout: "client",
+    document: { title: "Game Hosting | Premium Servers", description: "Premium game server hosting with high performance and reliability" },
+    permissions: { level: 0, intent: "home" }
+});
+
+data = (req) => {
+    let resources = db.get("resources", req.session.userinfo.email) || {};
+    function getRes(key) { return resources[key] ?? 0 };
+    return (
+        <>
+            <div class="w-full px-4 z-0">
+                <h1 class="text-zinc-200 text-xl">Vault</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-2 gap-4">
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M14 6H6v8h8V6Z" />
+                                <path fill-rule="evenodd" d="M9.25 3V1.75a.75.75 0 0 1 1.5 0V3h1.5V1.75a.75.75 0 0 1 1.5 0V3h.5A2.75 2.75 0 0 1 17 5.75v.5h1.25a.75.75 0 0 1 0 1.5H17v1.5h1.25a.75.75 0 0 1 0 1.5H17v1.5h1.25a.75.75 0 0 1 0 1.5H17v.5A2.75 2.75 0 0 1 14.25 17h-.5v1.25a.75.75 0 0 1-1.5 0V17h-1.5v1.25a.75.75 0 0 1-1.5 0V17h-1.5v1.25a.75.75 0 0 1-1.5 0V17h-.5A2.75 2.75 0 0 1 3 14.25v-.5H1.75a.75.75 0 0 1 0-1.5H3v-1.5H1.75a.75.75 0 0 1 0-1.5H3v-1.5H1.75a.75.75 0 0 1 0-1.5H3v-.5A2.75 2.75 0 0 1 5.75 3h.5V1.75a.75.75 0 0 1 1.5 0V3h1.5ZM4.5 5.75c0-.69.56-1.25 1.25-1.25h8.5c.69 0 1.25.56 1.25 1.25v8.5c0 .69-.56 1.25-1.25 1.25h-8.5c-.69 0-1.25-.56-1.25-1.25v-8.5Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("memory")} <span class="text-zinc-400">MB</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available memory</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M4.632 3.533A2 2 0 0 1 6.577 2h6.846a2 2 0 0 1 1.945 1.533l1.976 8.234A3.489 3.489 0 0 0 16 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234Z" />
+                                <path fill-rule="evenodd" d="M4 13a2 2 0 1 0 0 4h12a2 2 0 1 0 0-4H4Zm11.24 2a.75.75 0 0 1 .75-.75H16a.75.75 0 0 1 .75.75v.01a.75.75 0 0 1-.75.75h-.01a.75.75 0 0 1-.75-.75V15Zm-2.25-.75a.75.75 0 0 0-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 0 0 .75-.75V15a.75.75 0 0 0-.75-.75h-.01Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("disk")} <span class="text-zinc-400">MB</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available disk</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M11.983 1.907a.75.75 0 0 0-1.292-.657l-8.5 9.5A.75.75 0 0 0 2.75 12h6.572l-1.305 6.093a.75.75 0 0 0 1.292.657l8.5-9.5A.75.75 0 0 0 17.25 8h-6.572l1.305-6.093Z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("cpu")} <span class="text-zinc-400">%</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available CPU</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M.676 6.941A12.964 12.964 0 0 1 10 3c3.657 0 6.963 1.511 9.324 3.941a.75.75 0 0 1-.008 1.053l-.353.354a.75.75 0 0 1-1.069-.008C15.894 6.28 13.097 5 10 5 6.903 5 4.106 6.28 2.106 8.34a.75.75 0 0 1-1.069.008l-.353-.354a.75.75 0 0 1-.008-1.053Zm2.825 2.833A8.976 8.976 0 0 1 10 7a8.976 8.976 0 0 1 6.499 2.774.75.75 0 0 1-.011 1.049l-.354.354a.75.75 0 0 1-1.072-.012A6.978 6.978 0 0 0 10 9c-1.99 0-3.786.83-5.061 2.165a.75.75 0 0 1-1.073.012l-.354-.354a.75.75 0 0 1-.01-1.05Zm2.82 2.84A4.989 4.989 0 0 1 10 11c1.456 0 2.767.623 3.68 1.614a.75.75 0 0 1-.022 1.039l-.354.354a.75.75 0 0 1-1.085-.026A2.99 2.99 0 0 0 10 13c-.88 0-1.67.377-2.22.981a.75.75 0 0 1-1.084.026l-.354-.354a.75.75 0 0 1-.021-1.039Zm2.795 2.752a1.248 1.248 0 0 1 1.768 0 .75.75 0 0 1 0 1.06l-.354.354a.75.75 0 0 1-1.06 0l-.354-.353a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("allocations")} <span class="text-zinc-400">unit(s)</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available allocations</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path fill-rule="evenodd" d="M10 1c3.866 0 7 1.79 7 4s-3.134 4-7 4-7-1.79-7-4 3.134-4 7-4Zm5.694 8.13c.464-.264.91-.583 1.306-.952V10c0 2.21-3.134 4-7 4s-7-1.79-7-4V8.178c.396.37.842.688 1.306.953C5.838 10.006 7.854 10.5 10 10.5s4.162-.494 5.694-1.37ZM3 13.179V15c0 2.21 3.134 4 7 4s7-1.79 7-4v-1.822c-.396.37-.842.688-1.306.953-1.532.875-3.548 1.369-5.694 1.369s-4.162-.494-5.694-1.37A7.009 7.009 0 0 1 3 13.179Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("databases")} <span class="text-zinc-400">unit(s)</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available databases</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M2 3a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2Z" />
+                                <path fill-rule="evenodd" d="M2 7.5h16l-.811 7.71a2 2 0 0 1-1.99 1.79H4.802a2 2 0 0 1-1.99-1.79L2 7.5ZM7 11a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("backups")} <span class="text-zinc-400">unit(s)</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available backups</span>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center space-x-3 bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800">
+                        <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                <path d="M16.555 5.412a8.028 8.028 0 0 0-3.503-2.81 14.899 14.899 0 0 1 1.663 4.472 8.547 8.547 0 0 0 1.84-1.662ZM13.326 7.825a13.43 13.43 0 0 0-2.413-5.773 8.087 8.087 0 0 0-1.826 0 13.43 13.43 0 0 0-2.413 5.773A8.473 8.473 0 0 0 10 8.5c1.18 0 2.304-.24 3.326-.675ZM6.514 9.376A9.98 9.98 0 0 0 10 10c1.226 0 2.4-.22 3.486-.624a13.54 13.54 0 0 1-.351 3.759A13.54 13.54 0 0 1 10 13.5c-1.079 0-2.128-.127-3.134-.366a13.538 13.538 0 0 1-.352-3.758ZM5.285 7.074a14.9 14.9 0 0 1 1.663-4.471 8.028 8.028 0 0 0-3.503 2.81c.529.638 1.149 1.199 1.84 1.66ZM17.334 6.798a7.973 7.973 0 0 1 .614 4.115 13.47 13.47 0 0 1-3.178 1.72 15.093 15.093 0 0 0 .174-3.939 10.043 10.043 0 0 0 2.39-1.896ZM2.666 6.798a10.042 10.042 0 0 0 2.39 1.896 15.196 15.196 0 0 0 .174 3.94 13.472 13.472 0 0 1-3.178-1.72 7.973 7.973 0 0 1 .615-4.115ZM10 15c.898 0 1.778-.079 2.633-.23a13.473 13.473 0 0 1-1.72 3.178 8.099 8.099 0 0 1-1.826 0 13.47 13.47 0 0 1-1.72-3.178c.855.151 1.735.23 2.633.23ZM14.357 14.357a14.912 14.912 0 0 1-1.305 3.04 8.027 8.027 0 0 0 4.345-4.345c-.953.542-1.971.981-3.04 1.305ZM6.948 17.397a8.027 8.027 0 0 1-4.345-4.345c.953.542 1.971.981 3.04 1.305a14.912 14.912 0 0 0 1.305 3.04Z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-zinc-200 text-md">${getRes("subdomains")} <span class="text-zinc-400">unit(s)</span> </h1>
+                            <span class="text-zinc-300 text-xs">Available subdomains</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full mt-10 px-4 z-0 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="w-full">
+                    <h1 class="text-zinc-200 text-xl">Quick Links</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 mt-2 gap-4">
+                        <a href="/account" class="group w-full flex items-center justify-between bg-zinc-900/50 rounded-lg p-4 border border-black ring-1 ring-zinc-800 hover:bg-zinc-800/50 transition-all duration-200">
+                            <div class="flex items-center space-x-3">
+                                <div class="rounded-lg bg-zinc-900 text-zinc-400 border border-zinc-800 ring-1 ring-black p-2 group-hover:text-purple-400 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                        <path fill-rule="evenodd" d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.993 6.993 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="flex flex-col">
+                                    <h1 class="text-zinc-200 text-md font-medium">Settings</h1>
+                                    <span class="text-zinc-400 text-xs">Configure your account</span>
+                                </div>
+                            </div>
+                            <div class="text-zinc-500 group-hover:text-zinc-300 group-hover:translate-x-1 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L11.168 10 7.23 6.29a.75.75 0 1 1 1.04-1.08l4.5 4.25a.75.75 0 0 1 0 1.08l-4.5 4.25a.75.75 0 0 1-1.06-.02Z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full hidden">
+                    <h1 class="text-zinc-200 text-xl">Activity logs</h1>
+                    <div class="mt-2 space-y-2">
+                        <div className="w-full flex items-center justify-between bg-zinc-900/50 rounded-lg p-3 border border-black ring-1 ring-zinc-800">
+                            <div className="flex items-center space-x-3">
+                                <div className="rounded-lg bg-zinc-900 text-emerald-400 border border-zinc-800 ring-1 ring-black p-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-11.25a.75.75 0 0 0-1.5 0v4.59L7.3 9.24a.75.75 0 0 0-1.1 1.02l3.25 3.5a.75.75 0 0 0 1.1 0l3.25-3.5a.75.75 0 1 0-1.1-1.02l-1.95 2.1V6.75Z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="flex flex-col">
+                                    <h1 className="text-zinc-200 text-sm">Server started successfully</h1>
+                                    <span className="text-zinc-400 text-xs">Today at 2:30 PM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full flex items-center justify-between bg-zinc-900/50 rounded-lg p-3 border border-black ring-1 ring-zinc-800">
+                            <div className="flex items-center space-x-3">
+                                <div className="rounded-lg bg-zinc-900 text-amber-400 border border-zinc-800 ring-1 ring-black p-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="flex flex-col">
+                                    <h1 className="text-zinc-200 text-sm">High CPU usage detected</h1>
+                                    <span className="text-zinc-400 text-xs">Yesterday at 6:12 PM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full flex items-center justify-between bg-zinc-900/50 rounded-lg p-3 border border-black ring-1 ring-zinc-800">
+                            <div className="flex items-center space-x-3">
+                                <div className="rounded-lg bg-zinc-900 text-blue-400 border border-zinc-800 ring-1 ring-black p-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                                        <path d="M4.75 3A1.75 1.75 0 0 0 3 4.75v2.752l.104-.002h13.792c.035 0 .07 0 .104.002V4.75A1.75 1.75 0 0 0 15.25 3H4.75Z" />
+                                        <path fillRule="evenodd" d="M3 9.375c0-.621.504-1.125 1.125-1.125h11.75c.621 0 1.125.504 1.125 1.125v5.875c0 .966-.784 1.75-1.75 1.75h-10.5A1.75 1.75 0 0 1 3 15.25V9.375ZM6.5 15a.75.75 0 0 1-.75-.75v-1.5a.75.75 0 0 1 1.5 0v1.5A.75.75 0 0 1 6.5 15Zm3.75-.75a.75.75 0 0 0 1.5 0v-1.5a.75.75 0 0 0-1.5 0v1.5Z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="flex flex-col">
+                                    <h1 className="text-zinc-200 text-sm">Database backup completed</h1>
+                                    <span className="text-zinc-400 text-xs">Mar 15, 2023 at 8:45 AM</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full flex items-center justify-between bg-zinc-900/50 rounded-lg p-3 border border-black ring-1 ring-zinc-800">
+                            <div className="flex items-center space-x-3">
+                                <div className="rounded-lg bg-zinc-900 text-red-400 border border-zinc-800 ring-1 ring-black p-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="size-4">
+                                        <path fillRule="evenodd" d="M10.339 2.237a.532.532 0 0 0-.678 0 11.947 11.947 0 0 1-7.078 2.75.5.5 0 0 0-.479.425A12.11 12.11 0 0 0 2 7c0 5.163 3.26 9.564 7.834 11.257a.48.48 0 0 0 .332 0C14.74 16.564 18 12.163 18 7.001c0-.54-.035-1.07-.104-1.59a.5.5 0 0 0-.48-.425 11.947 11.947 0 0 1-7.077-2.75ZM10 6a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 6Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div className="flex flex-col">
+                                    <h1 className="text-zinc-200 text-sm">Security alert: failed login attempts</h1>
+                                    <span className="text-zinc-400 text-xs">Mar 12, 2023 at 11:20 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+module.exports = { meta, data };

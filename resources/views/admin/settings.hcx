@@ -1,0 +1,123 @@
+meta = ({
+    id: "admin.index", async: false, layout: "admin",
+    document: { title: "Home", description: hc.settings.branding.seo.description },
+    permissions: { level: 0, intent: "admin" }
+});
+
+let allSettings = hc.modules.getAllSettings();
+let view;
+
+for ([i, j] of Object.entries(allSettings)) {
+    if (!view) view = '';
+    view += <>
+        <div class="w-full bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-4 mb-4">
+            <h1 class="text-lg text-zinc-200 capitalize">${i}</h1>
+            <div class="w-full h-px bg-zinc-800 my-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${Object.entries(j.properties).map(([key, setting]) => {
+                    if (setting.type === 'object' && setting.properties) {
+                        return <>
+                            <div class="col-span-1 md:col-span-2">
+                                <div class="border border-zinc-800 bg-zinc-900/30 rounded-lg p-3 mb-2">
+                                    <h3 class="text-zinc-300 font-medium mb-3">${key}</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        ${Object.entries(setting.properties).map(([subKey, subSetting]) => {
+                                            let currentValue = hc.settings.raw(`${i}.${key}.${subKey}`) !== undefined ? 
+                                                hc.settings.raw(`${i}.${key}.${subKey}`) : 
+                                                '';
+                                            let defaultValue = subSetting.default !== undefined ? subSetting.default : '';
+                                            
+                                            return `
+                                                <div class="flex flex-col gap-2">
+                                                    <label class="text-zinc-400 text-sm">
+                                                        ${subSetting.description || subKey}
+                                                        ${subSetting.required ? '<span class="text-red-500">*</span>' : ''}
+                                                    </label>
+                                                    ${subSetting.type === 'boolean' ? `
+                                                        <select 
+                                                            name="${i}.${key}.${subKey}" 
+                                                            class="settings-input bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none"
+                                                        >
+                                                            <option value="true" ${currentValue === true ? 'selected' : ''}>True</option>
+                                                            <option value="false" ${currentValue === false ? 'selected' : ''}>False</option>
+                                                        </select>
+                                                    ` : `
+                                                        <input 
+                                                            type="${subSetting.type || 'text'}" 
+                                                            name="${i}.${key}.${subKey}" 
+                                                            value="${currentValue}" 
+                                                            placeholder="${defaultValue}"
+                                                            class="settings-input bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" 
+                                                        />
+                                                    `}
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </>;
+                    } else {
+                        let currentValue = hc.settings.raw(`${i}.${key}`) !== undefined ? 
+                            hc.settings.raw(`${i}.${key}`) : 
+                            '';
+                        let defaultValue = setting.default !== undefined ? setting.default : '';
+                        
+                        return <>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-zinc-400 text-sm">
+                                    ${setting.description || key}
+                                    ${setting.required ? '<span class="text-red-500">*</span>' : ''}
+                                </label>
+                                ${setting.type === 'boolean' ? `
+                                    <select 
+                                        name="${i}.${key}" 
+                                        class="settings-input bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none"
+                                    >
+                                        <option value="true" ${currentValue === true ? 'selected' : ''}>True</option>
+                                        <option value="false" ${currentValue === false ? 'selected' : ''}>False</option>
+                                    </select>
+                                ` : `
+                                    <input 
+                                        type="${setting.type || 'text'}" 
+                                        name="${i}.${key}" 
+                                        value="${currentValue}"
+                                        placeholder="${defaultValue}"
+                                        class="settings-input bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" 
+                                    />
+                                `}
+                            </div>
+                        </>;
+                    }
+                }).join('')}
+            </div>
+        </div>
+    </>;
+}
+
+data = (req) => (
+    <>
+        <form id="settings-form" class="w-full">
+            ${view}
+            
+            <div id="settings-popup" class="fixed bottom-0 left-0 right-0 p-4 shadow-lg transform transition-transform hidden z-50">
+                <div class="container rounded-xl mx-auto flex justify-between items-center bg-zinc-900/50 backdrop-blur-md border border-zinc-800/80 p-4">
+                    <div class="text-zinc-300">
+                        You have unsaved changes
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="settings-revert" class="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 rounded-lg text-zinc-200 transition">
+                            Revert
+                        </button>
+                        <button id="settings-save" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-white transition">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script src="/assets/admin/settings.js"></script>
+    </>
+)
+
+module.exports = { meta, data };

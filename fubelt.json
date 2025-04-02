@@ -1,0 +1,14 @@
+{
+    "log_level": "info",
+    "views": "./resources/views",
+    "public": "./public",
+    "layouts": "./resources/views/layouts",
+    "components": [
+        "./resources/views/partials"
+    ],
+    "import_alias": {
+        "@": "./",
+        "@components": "./resources/views/partials",
+        "@layouts": "./resources/views/layouts"
+    }
+}

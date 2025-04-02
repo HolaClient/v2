@@ -1,0 +1,15 @@
+meta = ({
+    id: "admin.index", async: false, layout: "admin",
+    document: { title: "Home", description: hc.settings.branding.seo.description },
+    permissions: { level: 0, intent: "admin" }
+});
+
+data = (req) => (
+    <>
+        <div class="w-full px-4 z-0">
+            <h1 class="text-zinc-200 text-xl">Coming soon. Come back later!</h1>
+        </div>
+    </>
+)
+
+module.exports = { meta, data };
