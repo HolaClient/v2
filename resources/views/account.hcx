@@ -49,7 +49,7 @@ data = (req) => {
                             <div class="w-max h-max rounded-full p-1 bg-gradient-to-b from-zinc-800 to-transparent">
                                 <img src="${req.session.userinfo.avatar}" alt="user" class="size-28 border border-zinc-800/80 rounded-full" />
                             </div>
-                            <div class="flex flex-col pb-2">
+                            <div class="flex flex-col pb-2 -space-y-1">
                                 <h1 class="text-zinc-300 text-2xl">${req.session.userinfo.nickname}</h1>
                                 <span class="text-zinc-400">@${req.session.userinfo.username}</span>
                             </div>

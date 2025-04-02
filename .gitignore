@@ -1,0 +1,7 @@
+node_modules/
+storage/
+*.node
+.env
+public/common/tailwind.min.css
+public/common/tailwind.css
+src/modules/HCF/config/tailwind.map
