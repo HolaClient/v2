@@ -45,12 +45,7 @@ module.exports = async () => {
                     return res.status(400).json({ success: false, error: `Insufficient ${resource}` });
                 }
                 
-        
-                res.json({
-                    success: true, 
-                    message: `Successfully sold ${quantity} ${resource}`,
-                    balance: userBalance + totalPrice
-                });
+                
             }
         } catch (error) {
             console.error('Transaction error:', error);
