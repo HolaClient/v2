@@ -75,7 +75,7 @@ const hc = require('./utils/hc');
             ["OS", os.platform()],
             ["Memory", `v2: ${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB, ${Math.round(os.totalmem() / 1024 / 1024 / 1024)}-${Math.round(os.totalmem() / 1024 / 1024 / 1024) - Math.round(os.freemem() / 1024 / 1024 / 1024)}=${Math.round(os.freemem() / 1024 / 1024 / 1024)}GB`],
             ["Node", process.version],
-            ["CPU", os.cpus()[0].model],
+            ["vCPU", os.cpus()[0].model],
             ["Uptime", `${Math.floor(process.uptime())}s`],
             ["Hostname", os.hostname()],
             ["IP", b?.address],
