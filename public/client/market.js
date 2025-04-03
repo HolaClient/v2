@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryQuantityElement = document.getElementById('summary-quantity');
     const totalPriceElement = document.getElementById('total-price');
     
-    // Parse market prices from the hidden div
     let marketPrices = {};
     try {
         const marketPriceData = document.getElementById('market-price');
@@ -170,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(message);
                 closeTransactionModal();
                 
-                // Refresh page to update resource counts
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);

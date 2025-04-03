@@ -27,16 +27,24 @@ module.exports = async () => {
                 return res.status(400).json({ success: false, error: 'Invalid action' });
             }
             
-            const userBalance = db.get("economy", req.session.user.id).coins ?? 0;
+            let userBalance = db.get("economy", req.session.user.id) || { coins: 0 };
             
             const totalPrice = price * quantity;
             
             if (action === 'buy') {
-                if (userBalance < totalPrice) {
+                if (userBalance.coins < totalPrice) {
                     return res.status(400).json({ success: false, error: 'Insufficient balance' });
                 }
+
+                userBalance.coins -= totalPrice;
                 
-                
+                db.set("economy", req.session.user.id, userBalance);
+
+                const userResources = db.get("resources", req.session.user.id) || {};
+                userResources[resource] = (userResources[resource] || 0) + quantity;
+                db.set("resources", req.session.user.id, userResources);
+
+                return res.json({ success: true, message: 'Transaction successful', balance: userBalance.coins });
             } else if (action === 'sell') {
                 const userResources = db.get("resources", req.session.user.id) || {};
                 const currentAmount = userResources[resource] || 0;
@@ -45,7 +53,13 @@ module.exports = async () => {
                     return res.status(400).json({ success: false, error: `Insufficient ${resource}` });
                 }
                 
-                
+                userResources[resource] -= quantity;
+                db.set("resources", req.session.user.id, userResources);
+
+                userBalance.coins += totalPrice;
+                db.set("economy", req.session.user.id, userBalance);
+
+                return res.json({ success: true, message: 'Transaction successful', balance: userBalance.coins });
             }
         } catch (error) {
             console.error('Transaction error:', error);

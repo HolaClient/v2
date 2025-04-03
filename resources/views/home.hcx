@@ -1,6 +1,6 @@
 meta = ({
     id: "index", async: false, layout: "client",
-    document: { title: "Game Hosting | Premium Servers", description: "Premium game server hosting with high performance and reliability" },
+    document: { title: "Home", description: hc.settings.branding.seo.description },
     permissions: { level: 0, intent: "home" }
 });
 
