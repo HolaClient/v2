@@ -16,7 +16,7 @@ data = (req) => {
                     </svg>
                     <span>Pterodactyl Email:</span>
                 </span>
-                <span class="text-zinc-300">${pterodactyl.email}</span>
+                <span class="text-zinc-300 blur-sm hover:blur-0">${pterodactyl.email}</span>
             </div>
             <div class="w-full flex items center justify-between text-zinc-400 text-sm">
                 <span class="flex items-center space-x-2">
