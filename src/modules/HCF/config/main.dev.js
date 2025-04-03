@@ -205,12 +205,36 @@ function update(url, { content, props }) {
             const doc = parser.parseFromString(content, 'text/html');
             if (doc.body.innerHTML && !doc.body.querySelector('parsererror')) {
             const dynamicHeadElements = document.querySelectorAll('head style:not([resource]), head link:not([resource]), head script:not([resource]), head meta:not([name="viewport"])');
-            dynamicHeadElements.forEach(el => el.remove());
+            dynamicHeadElements.forEach(el => el.setAttribute('data-old-element', 'true'));
+            const newElements = [];
             Array.from(doc.head.children).forEach(el => {
                 if (!el.hasAttribute('resource') && el.tagName !== 'META' && el.tagName !== 'TITLE') {
-                document.head.appendChild(el.cloneNode(true));
+                    const newEl = el.cloneNode(true);
+                    document.head.appendChild(newEl);
+                    newElements.push(newEl);
                 }
             });
+            const cssLinks = newElements.filter(el => el.tagName === 'LINK' && el.getAttribute('rel') === 'stylesheet');
+            if (cssLinks.length > 0) {
+                Promise.all(
+                    cssLinks.map(link => 
+                        new Promise(resolve => {
+                            if (link.sheet) {
+                                resolve();
+                            } else {
+                                link.onload = resolve;
+                                link.onerror = resolve;
+                            }
+                        })
+                    )
+                ).then(() => {
+                    document.querySelectorAll('[data-old-element="true"]').forEach(el => el.remove());
+                });
+            } else {
+                setTimeout(() => {
+                    document.querySelectorAll('[data-old-element="true"]').forEach(el => el.remove());
+                }, 10);
+            }
             if (doc.title) {
                 document.title = doc.title;
             }

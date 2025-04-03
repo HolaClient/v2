@@ -77,8 +77,8 @@ module.exports = async (app) => {
         if (!twMin || twStat.mtimeMs > fs.statSync(`${config.public}/common/tailwind.min.css`).mtimeMs) makeMap(config);
         let appCSS = "";
         if (utils.fs.exists(`${config.public}/global.css`)) appCSS += fs.readFileSync(`${config.public}/global.css`, "utf8");
-        if (utils.fs.exists(`${config.public}/common/tailwind.min.css`)) appCSS += fs.readFileSync(`${config.public}/common/tailwind.min.css`, "utf8");
-        else appCSS += fs.readFileSync(`${config.public}/common/tailwind.css`, "utf8");
+        //if (utils.fs.exists(`${config.public}/common/tailwind.min.css`)) appCSS += fs.readFileSync(`${config.public}/common/tailwind.min.css`, "utf8");
+        /* else */ appCSS += fs.readFileSync(`${config.public}/common/tailwind.css`, "utf8");
         appCSS = appCSS.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s{2,}/g, " ").replace(/\n/g, "");
         fs.writeFileSync(`${config.public}/app.css`, appCSS);
         
@@ -165,8 +165,8 @@ module.exports = async (app) => {
     if (!twMin || twStat.mtimeMs > fs.statSync(`${config.public}/common/tailwind.min.css`).mtimeMs) makeMap(config);
     let appCSS = "";
     if (utils.fs.exists(`${config.public}/global.css`)) appCSS += fs.readFileSync(`${config.public}/global.css`, "utf8");
-    if (utils.fs.exists(`${config.public}/common/tailwind.min.css`)) appCSS += fs.readFileSync(`${config.public}/common/tailwind.min.css`, "utf8");
-    else appCSS += fs.readFileSync(`${config.public}/common/tailwind.css`, "utf8");
+    //if (utils.fs.exists(`${config.public}/common/tailwind.min.css`)) appCSS += fs.readFileSync(`${config.public}/common/tailwind.min.css`, "utf8");
+    /* else */ appCSS += fs.readFileSync(`${config.public}/common/tailwind.css`, "utf8");
     appCSS = appCSS.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\s{2,}/g, " ").replace(/\n/g, "");
     fs.writeFileSync(`${config.public}/app.css`, appCSS);
 

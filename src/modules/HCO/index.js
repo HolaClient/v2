@@ -32,6 +32,8 @@ module.exports = async (db, user, req, forced = false) => {
                 if (result.success == true && result?.data && result?.data?.attributes) {
                     k.push(result?.data?.attributes);
                     db.set("pterodactyl", "users", k);
+                } else {
+                    System.err.println(result);
                 }
             }
         } else {

@@ -32,7 +32,12 @@ data = (req) => (
                         <thead>
                             <tr className="bg-zinc-900 border border-zinc-800 rounded-lg">
                                 <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Server Name</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Resources</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Memory</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">CPU</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Disk</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Allocations</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Backups</th>
+                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Databases</th>
                                 <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Status</th>
                                 <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Created at</th>
                                 <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider">Actions</th>
@@ -41,11 +46,12 @@ data = (req) => (
                         <tbody className="divide-y divide-zinc-800">
                             <tr className="hover:bg-zinc-800/30 transition-colors">
                                 <td className="px-4 py-3 text-sm text-zinc-300">Test</td>
-                                <td className="px-4 py-3 text-sm text-zinc-300 space-x-2">
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">2GB Memory</span>
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">2v CPU</span>
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">4GB Disk</span>
-                                </td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1024 MB</td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1024 %</td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1024 MB</td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1</td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1</td>
+                                <td className="px-4 py-3 text-sm text-zinc-300">1</td>
                                 <td className="px-4 py-3">
                                     <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">Active</span>
                                 </td>

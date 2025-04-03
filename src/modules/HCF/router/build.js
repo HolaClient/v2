@@ -60,7 +60,7 @@ module.exports.http = (req, route, vars) => {
                 };`;
 
     page = page.replace("</head>", `<script>${script}</script>\n</head>`);
-    page = css.map(page, JSON.parse(fs.readFileSync(path.join(__dirname, "../config/tailwind.map"), "utf8")));
+    //page = css.map(page, JSON.parse(fs.readFileSync(path.join(__dirname, "../config/tailwind.map"), "utf8")));
     page = compress(page);
 
     return { content: page, props: eval(content).props };

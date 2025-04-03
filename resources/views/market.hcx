@@ -6,7 +6,7 @@ meta = ({
 
 data = (req) => (
     <>
-        <div class="w-full h-full px-4 md:pr-28 z-0">
+        <div class="w-full px-4 z-0">
             <h1 class="text-zinc-300 text-lg mt-4">RESOURCES <span class="text-zinc-400">(8)</span></h1>
             <div class="w-full mt-2 grid grid-cols-4 gap-4">
                 <div class="w-full border border-zinc-100/10 rounded-xl p-1">
@@ -20,10 +20,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Memory</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -40,10 +40,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Storage</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -60,10 +60,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">CPU Threads</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -80,10 +80,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Subdomains</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -100,10 +100,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Allocations</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -120,10 +120,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Backups</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -140,10 +140,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Databases</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-1.5 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
