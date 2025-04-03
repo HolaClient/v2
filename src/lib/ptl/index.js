@@ -8,8 +8,7 @@ let settings
 module.exports = {
     "servers": {
         "get": async function (a) {
-            let c = await db.get("pterodactyl-servers")
-            if (!c) c = await servers.servers(settings)
+            let c = await servers.servers(settings)
             let b;
             if (typeof a == "number") {
                 b = c.find(i => i.attributes.id === parseInt(a))
@@ -19,11 +18,8 @@ module.exports = {
             return b ?? ""
         },
         "getAll": async function () {
-            let a = await db.get("pterodactyl-servers")
-            if (!a) {
-                a = await servers.servers(settings)
+            let a = await servers.servers(settings)
                 await db.set("pterodactyl-servers", a)
-            }
             return a || []
         },
         "suspend": async function (a, b) {
@@ -34,14 +30,12 @@ module.exports = {
         },
         "files": {
             "get": async function (a) {
-                let b = await db.get("pterodactyl-files")
-                if (!b) b = await servers.files(settings)
+                let b = await servers.files(settings)
                 let c = b[a]
                 return c ?? []
             },
             "getAll": async function () {
-                let c = db.get("pterodactyl-files")
-                if (!c) c = await servers.files(settings)
+                let c = await servers.files(settings)
                 return c || {}
             },
         },
@@ -64,25 +58,21 @@ module.exports = {
     },
     "nodes": {
         "get": async function (a) {
-            let c = await db.get("pterodactyl-nodes")
-            if (!c) c = await nodes.nodes(settings)
+            let c = await nodes.nodes(settings)
             let b = c.find(i => i.attributes.id === parseInt(a))
             return b ?? ""
         },
         "getAll": async function () {
-            let a = await db.get("pterodactyl-nodes")
-            if (!a) a = await nodes.nodes(settings)
+            let a = await nodes.nodes(settings)
             return a || []
         },
         "getConfig": async function (a) {
-            let c = await db.get("pterodactyl-nodes")
-            if (!c) c = await nodes.nodes(settings)
+            let c = await nodes.nodes(settings)
             let b = c.find(i => i.attributes.id === parseInt(a))
             return b.attributes.configuration ?? ""
         },
         "getSystemInfo": async function (a) {
-            let c = await db.get("pterodactyl-nodes")
-            if (!c) c = await nodes.nodes(settings)
+            let c = await nodes.nodes(settings)
             let b = c.find(i => i.attributes.id === parseInt(a))
             return b.attributes.system ?? ""
         },
@@ -93,21 +83,18 @@ module.exports = {
     },
     "nests": {
         "get": async function (a) {
-            let c = await db.get("pterodactyl-eggs")
-            if (!c) c = await eggs.eggs(settings)
+            let c = await eggs.eggs(settings)
             let b = c.find(i => i.attributes.id === parseInt(a))
             return b ?? ""
         },
         "getAll": async function () {
-            let a = await db.get("pterodactyl-eggs")
-            if (!a) a = await eggs.eggs(settings)
+            let a = await eggs.eggs(settings)
             return a || []
         }
     },
     "eggs": {
         "get": async function (a) {
-            let b = await db.get("pterodactyl-eggs")
-            if (!b) b = await eggs.eggs(settings)
+            let b = await eggs.eggs(settings)
             let d;
             b.forEach(i => {
                 let c = i.attributes.relationships.eggs.data.find(j => j.attributes.id === parseInt(a))
@@ -120,8 +107,7 @@ module.exports = {
         },
         "getAll": async function () {
             try {
-                let a = await db.get("pterodactyl-eggs")
-                if (!a) a = await eggs.eggs(settings)
+                let a = await eggs.eggs(settings)
                 let b = []
                 for (let i of a) {
                     for (let j of i.attributes.relationships.eggs.data) {
@@ -136,27 +122,23 @@ module.exports = {
     },
     "nests": {
         "get": async function (a) {
-            let b = await db.get("pterodactyl-eggs")
-            if (!b) b = await eggs.eggs(settings)
+            let b = await eggs.eggs(settings)
             let c = await b.find(i => i.attributes.id == a)
             return c
         },
         "getAll": async function () {
-            let a = await db.get("pterodactyl-eggs")
-            if (!a) a = await eggs.eggs(settings)
+            let a = await eggs.eggs(settings)
             return a
         }
     },
     "locations": {
         "get": async function (a) {
-            let b = await db.get("pterodactyl-locations")
-            if (!b) b = await locations.locations()
+            let b = await locations.locations()
             let c = b.find(i => i.attributes.id === parseInt(a))
             return c || ""
         },
         "getAll": async function (b) {
-            let a = await db.get("pterodactyl-locations")
-            if (!a) a = await locations.locations()
+            let a = await locations.locations()
             let c = a.find(i => i.attributes.id === parseInt(b))
             return c.attributes.relationships.eggs.data || []
         },
@@ -166,8 +148,7 @@ module.exports = {
     },
     "users": {
         "get": async function (a) {
-            let c = await db.get("pterodactyl-users")
-            if (!c) c = await users.users(settings)
+            let c = await users.users(settings)
             let b;
             if (typeof a == "number") {
                 b = c.find(i => i.attributes.id === parseInt(a))
@@ -177,8 +158,7 @@ module.exports = {
             return b ?? ""
         },
         "getAll": async function () {
-            let a = await db.get("pterodactyl-users")
-            if (!a) a = await users.users(settings)
+            let a = await users.users(settings)
             return a || []
         },
         "create": async function (a) {
@@ -191,8 +171,7 @@ module.exports = {
             return await users.delete(settings, a) || { success: false, error: 0 }
         },
         "servers": async function (a) {
-            let c = await db.get("pterodactyl-users")
-            if (!c) c = await users.users(settings)
+            let c = await users.users(settings)
             let b;
             if (typeof a == "number") {
                 b = c.find(i => i.attributes.id === parseInt(a))
