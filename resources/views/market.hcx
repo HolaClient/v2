@@ -132,73 +132,75 @@ data = (req) => (
             </div>
         </div>
 
-        <div id="market-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div id="market-modal" class="fixed inset-0 z-50 hidden">
             <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="modal-backdrop"></div>
-            <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-xl shadow-2xl w-full max-w-md p-1 z-10 transform transition-all scale-95 opacity-0" id="modal-content">
-                <div class="w-full h-max p-px rounded-xl bg-gradient-to-b from-zinc-900 to-transparent">
-                    <div class="w-full bg-zinc-950/80 rounded-xl p-5">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-zinc-200 text-xl font-medium" id="modal-title">Buy Memory</h3>
-                            <button id="close-modal" class="text-zinc-400 hover:text-zinc-200 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div>
-                                <label for="resource-quantity" class="block text-zinc-300 font-medium mb-1.5">Quantity</label>
-                                <div class="flex items-center">
-                                    <button id="decrease-quantity" class="bg-zinc-900/50 p-2 rounded-l-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-r-0 border-zinc-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                                        </svg>
-                                    </button>
-                                    <input 
-                                        type="number" 
-                                        id="resource-quantity" 
-                                        class="w-full p-2 text-center bg-zinc-900/50 text-zinc-100 outline-none border-y border-zinc-800"
-                                        value="1" 
-                                        min="1"
-                                    />
-                                    <button id="increase-quantity" class="bg-zinc-900/50 p-2 rounded-r-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-l-0 border-zinc-800">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
-                                    </button>
+            <div class="w-full items-center justify-center flex h-full">
+                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-xl shadow-2xl w-full max-w-md p-1 z-10 transform transition-all scale-95 opacity-0" id="modal-content">
+                    <div class="w-full h-max p-px rounded-xl bg-gradient-to-b from-zinc-900 to-transparent">
+                        <div class="w-full bg-zinc-950/80 rounded-xl p-5">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-zinc-200 text-xl font-medium" id="modal-title">Buy Memory</h3>
+                                <button id="close-modal" class="text-zinc-400 hover:text-zinc-200 transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="resource-quantity" class="block text-zinc-300 font-medium mb-1.5">Quantity</label>
+                                    <div class="flex items-center">
+                                        <button id="decrease-quantity" class="bg-zinc-900/50 p-2 rounded-l-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-r-0 border-zinc-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                                            </svg>
+                                        </button>
+                                        <input
+                                            type="number"
+                                            id="resource-quantity"
+                                            class="w-full p-2 text-center bg-zinc-900/50 text-zinc-100 outline-none border-y border-zinc-800"
+                                            value="1"
+                                            min="1"
+                                        />
+                                        <button id="increase-quantity" class="bg-zinc-900/50 p-2 rounded-r-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-l-0 border-zinc-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-lg p-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-zinc-400">Unit Price:</span>
+                                        <span class="text-zinc-200" id="unit-price">0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <span class="text-zinc-400">Quantity:</span>
+                                        <span class="text-zinc-200" id="summary-quantity">1</span>
+                                    </div>
+                                    <div class="border-t border-zinc-800/80 my-2 pt-2 flex justify-between items-center">
+                                        <span class="text-zinc-300 font-medium">Total:</span>
+                                        <span class="text-zinc-100 text-xl font-bold" id="total-price">0.00</span>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-lg p-4">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-zinc-400">Unit Price:</span>
-                                    <span class="text-zinc-200" id="unit-price">0.00</span>
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="text-zinc-400">Quantity:</span>
-                                    <span class="text-zinc-200" id="summary-quantity">1</span>
-                                </div>
-                                <div class="border-t border-zinc-800/80 my-2 pt-2 flex justify-between items-center">
-                                    <span class="text-zinc-300 font-medium">Total:</span>
-                                    <span class="text-zinc-100 text-xl font-bold" id="total-price">0.00</span>
-                                </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button id="cancel-transaction" class="px-4 py-2 text-sm bg-zinc-900 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all duration-200 font-medium border border-zinc-700/80 shadow-md hover:shadow-zinc-800/20 mr-3">
+                                    Cancel
+                                </button>
+                                <button id="confirm-transaction" class="px-4 py-2 text-sm text-white rounded-lg transition-all duration-200 font-medium shadow-md">
+                                    Confirm
+                                </button>
                             </div>
-                        </div>
-                        
-                        <div class="mt-6 flex justify-end">
-                            <button id="cancel-transaction" class="px-4 py-2 text-sm bg-zinc-900 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all duration-200 font-medium border border-zinc-700/80 shadow-md hover:shadow-zinc-800/20 mr-3">
-                                Cancel
-                            </button>
-                            <button id="confirm-transaction" class="px-4 py-2 text-sm text-white rounded-lg transition-all duration-200 font-medium shadow-md">
-                                Confirm
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <script src="/assets/client/market.js"></script>
     </>
 )
