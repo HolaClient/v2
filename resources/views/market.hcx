@@ -20,10 +20,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Memory</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="memory" data-action="buy" data-price="2.5" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="memory" data-action="sell" data-price="1.5" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -40,10 +40,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Storage</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="storage" data-action="buy" data-price="0.1" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="storage" data-action="sell" data-price="0.05" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -60,10 +60,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">CPU Threads</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="cpu" data-action="buy" data-price="5" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="cpu" data-action="sell" data-price="3" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -80,30 +80,10 @@ data = (req) => (
                     <div class="w-full px-2 pb-2">
                         <span class="text-lg pl-0.5 text-zinc-300">Subdomains</span>
                         <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="subdomain" data-action="buy" data-price="1" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Buy
                             </button>
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
-                                Sell
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full border border-zinc-100/10 rounded-xl p-1">
-                    <div class="w-full h-max p-px rounded-xl bg-gradient-to-b from-zinc-900 to-transparent">
-                        <div class="w-full bg-zinc-950 rounded-xl overflow-hidden relative">
-                            <div class="absolute z-10 w-full h-full bg-gradient-to-b from-transparent via-zinc-950/60 to-zinc-950"></div>
-                            <div class="absolute z-10 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent to-zinc-950"></div>
-                            <div class="w-full z-0 h-28 rounded-t-xl bg-center bg-cover bg-no-repeat bg-[url('https://media.istockphoto.com/id/1294021851/photo/abstract-graphic-world-map-illustration-on-blue-background-big-data-and-networking-concept-3d.jpg?s=612x612&w=0&k=20&c=XTG7NLkT69VxJdCCXUmD-IIUuICEwzAlyI8bsU4Z_NI=')]"></div>
-                        </div>
-                    </div>
-                    <div class="w-full px-2 pb-2">
-                        <span class="text-lg pl-0.5 text-zinc-300">Allocations</span>
-                        <div class="w-full grid grid-cols-2 gap-2">
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-green-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
-                                Buy
-                            </button>
-                            <button class="w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400  border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
+                            <button data-resource="subdomain" data-action="sell" data-price="0.5" class="market-btn w-full p-2 text-sm mt-1 hover:bg-zinc-900 hover:text-rose-400 duration-300 transition-all text-center text-zinc-400 border border-zinc-100/10 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-black to-zinc-900/70">
                                 Sell
                             </button>
                         </div>
@@ -151,6 +131,75 @@ data = (req) => (
                 </div>
             </div>
         </div>
+
+        <div id="market-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="modal-backdrop"></div>
+            <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-xl shadow-2xl w-full max-w-md p-1 z-10 transform transition-all scale-95 opacity-0" id="modal-content">
+                <div class="w-full h-max p-px rounded-xl bg-gradient-to-b from-zinc-900 to-transparent">
+                    <div class="w-full bg-zinc-950/80 rounded-xl p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-zinc-200 text-xl font-medium" id="modal-title">Buy Memory</h3>
+                            <button id="close-modal" class="text-zinc-400 hover:text-zinc-200 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label for="resource-quantity" class="block text-zinc-300 font-medium mb-1.5">Quantity</label>
+                                <div class="flex items-center">
+                                    <button id="decrease-quantity" class="bg-zinc-900/50 p-2 rounded-l-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-r-0 border-zinc-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                                        </svg>
+                                    </button>
+                                    <input 
+                                        type="number" 
+                                        id="resource-quantity" 
+                                        class="w-full p-2 text-center bg-zinc-900/50 text-zinc-100 outline-none border-y border-zinc-800"
+                                        value="1" 
+                                        min="1"
+                                    />
+                                    <button id="increase-quantity" class="bg-zinc-900/50 p-2 rounded-r-lg text-zinc-300 hover:bg-zinc-700 transition-colors border border-l-0 border-zinc-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-zinc-900/30 backdrop-blur-sm border border-zinc-800/80 rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-zinc-400">Unit Price:</span>
+                                    <span class="text-zinc-200" id="unit-price">0.00</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-zinc-400">Quantity:</span>
+                                    <span class="text-zinc-200" id="summary-quantity">1</span>
+                                </div>
+                                <div class="border-t border-zinc-800/80 my-2 pt-2 flex justify-between items-center">
+                                    <span class="text-zinc-300 font-medium">Total:</span>
+                                    <span class="text-zinc-100 text-xl font-bold" id="total-price">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button id="cancel-transaction" class="px-4 py-2 text-sm bg-zinc-900 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-all duration-200 font-medium border border-zinc-700/80 shadow-md hover:shadow-zinc-800/20 mr-3">
+                                Cancel
+                            </button>
+                            <button id="confirm-transaction" class="px-4 py-2 text-sm text-white rounded-lg transition-all duration-200 font-medium shadow-md">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="/assets/client/market.js"></script>
     </>
 )
 
