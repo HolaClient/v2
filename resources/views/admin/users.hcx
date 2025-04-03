@@ -1,0 +1,85 @@
+meta = ({
+    id: "admin.users", async: false, layout: "admin",
+    document: { title: "User Management", description: hc.settings.branding.seo.description },
+    permissions: { level: 0, intent: "admin" }
+});
+
+data = (req) => (
+    <>
+        <div class="w-full space-y-6 p-6">
+            <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl text-zinc-200">Roles</h2>
+                    <button onclick="createRole()" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">
+                        Create Role
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-zinc-400 text-sm">
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Level</th>
+                                <th class="p-2">Intents</th>
+                                <th class="p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="roles-table" class="text-zinc-300">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl text-zinc-200">User Roles</h2>
+                    <div class="flex space-x-2">
+                        <input type="text" id="user-search" placeholder="Search users..." class="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-zinc-400 text-sm">
+                                <th class="p-2">User</th>
+                                <th class="p-2">Roles</th>
+                                <th class="p-2">Custom Intents</th>
+                                <th class="p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table" class="text-zinc-300">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md">
+                <h3 class="text-lg text-zinc-200 mb-4">Role Details</h3>
+                <form id="role-form" class="space-y-4">
+                    <div>
+                        <label class="text-zinc-400 text-sm">Name</label>
+                        <input type="text" name="name" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Level</label>
+                        <input type="number" name="level" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Intents</label>
+                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700">
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="closeModal('role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="/assets/admin/users.js"></script>
+    </>
+)
+
+module.exports = { meta, data };
