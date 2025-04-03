@@ -10,7 +10,7 @@ data = (req) => (
             <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-xl text-zinc-200">Roles</h2>
-                    <button onclick="createRole()" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">
+                    <button onclick="showModal('create-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">
                         Create Role
                     </button>
                 </div>
@@ -54,10 +54,17 @@ data = (req) => (
             </div>
         </div>
 
-        <div id="role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md">
-                <h3 class="text-lg text-zinc-200 mb-4">Role Details</h3>
-                <form id="role-form" class="space-y-4">
+        <div id="create-role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg text-zinc-200">Create Role</h3>
+                    <button onclick="hideModal('create-role-modal')" class="text-zinc-400 hover:text-zinc-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="create-role-form" class="space-y-4">
                     <div>
                         <label class="text-zinc-400 text-sm">Name</label>
                         <input type="text" name="name" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
@@ -68,12 +75,103 @@ data = (req) => (
                     </div>
                     <div>
                         <label class="text-zinc-400 text-sm">Intents</label>
-                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700">
+                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
                         </select>
                     </div>
                     <div class="flex justify-end space-x-2">
-                        <button type="button" onclick="closeModal('role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300">Cancel</button>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white">Save</button>
+                        <button type="button" onclick="hideModal('create-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg text-zinc-200">Edit Role</h3>
+                    <button onclick="hideModal('edit-role-modal')" class="text-zinc-400 hover:text-zinc-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="edit-role-form" class="space-y-4">
+                    <input type="hidden" name="id" />
+                    <div>
+                        <label class="text-zinc-400 text-sm">Name</label>
+                        <input type="text" name="name" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Level</label>
+                        <input type="number" name="level" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Intents</label>
+                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="hideModal('edit-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-user-roles-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg text-zinc-200">Edit User Roles</h3>
+                    <button onclick="hideModal('edit-user-roles-modal')" class="text-zinc-400 hover:text-zinc-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="edit-user-roles-form" class="space-y-4">
+                    <input type="hidden" name="userId" />
+                    <div>
+                        <label class="text-zinc-400 text-sm">User</label>
+                        <div id="user-email" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"></div>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Roles</label>
+                        <select multiple name="roles" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="hideModal('edit-user-roles-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-user-intents-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg text-zinc-200">Edit User Intents</h3>
+                    <button onclick="hideModal('edit-user-intents-modal')" class="text-zinc-400 hover:text-zinc-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <form id="edit-user-intents-form" class="space-y-4">
+                    <input type="hidden" name="userId" />
+                    <div>
+                        <label class="text-zinc-400 text-sm">User</label>
+                        <div id="user-email-intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"></div>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Intents</label>
+                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button type="button" onclick="hideModal('edit-user-intents-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
                     </div>
                 </form>
             </div>
