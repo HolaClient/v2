@@ -13,6 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryQuantityElement = document.getElementById('summary-quantity');
     const totalPriceElement = document.getElementById('total-price');
     
+    // Parse market prices from the hidden div
+    let marketPrices = {};
+    try {
+        const marketPriceData = document.getElementById('market-price');
+        if (marketPriceData) {
+            marketPrices = JSON.parse(marketPriceData.textContent);
+            console.log('Market prices loaded:', marketPrices);
+        }
+    } catch (error) {
+        console.error('Failed to parse market prices:', error);
+    }
+    
     let currentTransaction = {
         resource: '',
         action: '',
@@ -22,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const resourceNames = {
         memory: 'Memory',
-        storage: 'Storage',
+        disk: 'Storage',
         cpu: 'CPU Threads',
-        subdomain: 'Subdomains',
+        subdomains: 'Subdomains',
         allocations: 'Allocations',
         backups: 'Backups',
         databases: 'Databases'
@@ -32,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const resourceUnits = {
         memory: 'GB',
-        storage: 'GB',
+        disk: 'GB',
         cpu: 'Cores',
-        subdomain: '',
+        subdomains: '',
         allocations: 'Ports',
         backups: 'Slots',
         databases: ''
@@ -130,14 +142,48 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePriceInfo();
     });
     
-    confirmTransactionBtn.addEventListener('click', () => {
+    confirmTransactionBtn.addEventListener('click', async () => {
         const { resource, action, price, quantity } = currentTransaction;
         const total = (price * quantity).toFixed(2);
         
+        confirmTransactionBtn.disabled = true;
+        confirmTransactionBtn.textContent = action === 'buy' ? 'Buying...' : 'Selling...';
         
-        alert(`Successfully ${action === 'buy' ? 'purchased' : 'sold'} ${quantity} ${resourceNames[resource]} for $${total}`);
-        
-        closeTransactionModal();
+        try {
+            const response = await fetch('/api/market/transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    resource,
+                    action,
+                    price,
+                    quantity
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                const message = `Successfully ${action === 'buy' ? 'purchased' : 'sold'} ${quantity} ${resourceNames[resource]} for $${total}`;
+                alert(message);
+                closeTransactionModal();
+                
+                // Refresh page to update resource counts
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                alert(`Transaction failed: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Transaction error:', error);
+            alert(`Transaction failed: Network error`);
+        } finally {
+            confirmTransactionBtn.disabled = false;
+            confirmTransactionBtn.textContent = action === 'buy' ? 'Buy Now' : 'Sell Now';
+        }
     });
     
     document.addEventListener('keydown', (e) => {

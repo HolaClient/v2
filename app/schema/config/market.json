@@ -1,0 +1,76 @@
+{
+    "_": "DO NOT MODIFY: FILE GENERATED AUTOMATICALLY BY HOLACLIENT",
+    "name": "config.market.resources",
+    "properties": {
+        "memory": {
+            "type": "number",
+            "pointer": "market.resources.memory",
+            "default": 100,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for memory for each GB.",
+            "required": true
+        },
+        "cpu": {
+            "type": "number",
+            "pointer": "market.resources.cpu",
+            "default": 100,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for cpu for each %.",
+            "required": true
+        },
+        "disk": {
+            "type": "number",
+            "pointer": "market.resources.disk",
+            "default": 100,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for disk for each GB.",
+            "required": true
+        },
+        "allocations": {
+            "type": "number",
+            "pointer": "market.resources.allocations",
+            "default": 50,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for allocations for each quantity.",
+            "required": true
+        },
+        "backups": {
+            "type": "number",
+            "pointer": "market.resources.backups",
+            "default": 50,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for backups for each quantity.",
+            "required": true
+        },
+        "databases": {
+            "type": "number",
+            "pointer": "market.resources.databases",
+            "default": 50,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for databases for each quantity.",
+            "required": true
+        },
+        "subdomains": {
+            "type": "number",
+            "pointer": "market.resources.subdomains",
+            "default": 50,
+            "minLength": 1,
+            "maxLength": 20,
+            "pattern": "^[0-9]+$",
+            "description": "Marketplace value for subdomains for each quantity.",
+            "required": true
+        }
+    }
+}
