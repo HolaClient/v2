@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const axios = require('axios');
 
 // Middleware to ensure user is admin
 const isAdmin = (req, res, next) => {
@@ -23,7 +20,7 @@ const getPterodactylConfig = () => {
 };
 
 // Fetch locations from Pterodactyl
-router.get('/locations', isAdmin, async (req, res) => {
+app.get('/locations', isAdmin, async (req, res) => {
     try {
         const { apiUrl, apiKey } = getPterodactylConfig();
         
@@ -43,7 +40,7 @@ router.get('/locations', isAdmin, async (req, res) => {
 });
 
 // Fetch nodes from Pterodactyl
-router.get('/nodes', isAdmin, async (req, res) => {
+app.get('/nodes', isAdmin, async (req, res) => {
     try {
         const { apiUrl, apiKey } = getPterodactylConfig();
         
@@ -63,7 +60,7 @@ router.get('/nodes', isAdmin, async (req, res) => {
 });
 
 // Fetch eggs from Pterodactyl
-router.get('/eggs', isAdmin, async (req, res) => {
+app.get('/eggs', isAdmin, async (req, res) => {
     try {
         const { apiUrl, apiKey } = getPterodactylConfig();
         
@@ -106,7 +103,7 @@ router.get('/eggs', isAdmin, async (req, res) => {
 });
 
 // Save configurations
-router.post('/save', isAdmin, async (req, res) => {
+app.post('/save', isAdmin, async (req, res) => {
     try {
         const { locations, nodes, softwares } = req.body;
         
@@ -124,4 +121,4 @@ router.post('/save', isAdmin, async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = app;
