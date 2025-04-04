@@ -87,9 +87,11 @@ data = (req) => (
                             <label class="block text-zinc-300 font-medium">Select Region<span class="text-rose-500">*</span></label>
                             <p class="text-zinc-400 text-sm mb-3">Choose the closest region to your players for optimal performance</p>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div id="locations-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <div class="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 cursor-pointer hover:border-zinc-600 transition-all flex items-center space-x-4 h-fit">
-                                    <img src="https://flagcdn.com/de.svg" alt="flag" class="w-16 h-auto rounded-lg flex-shrink-0" />
+                                    <div class="bg-zinc-800 text-zinc-300 rounded-lg w-16 h-16 flex items-center justify-center text-2xl font-bold">
+                                        DE
+                                    </div>
                                     <div class="flex flex-col h-fit">
                                         <span class="text-zinc-200 font-medium">Germany</span>
                                         <p class="text-zinc-400 text-sm">DE - European Union</p>
@@ -121,7 +123,7 @@ data = (req) => (
                             <label class="block text-zinc-300 font-medium">Available Nodes<span class="text-rose-500">*</span></label>
                             <p class="text-zinc-400 text-sm mb-3">Select a node in your chosen region</p>
 
-                            <div class="space-y-4">
+                            <div id="nodes-container" class="space-y-4">
                                 <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 cursor-pointer hover:border-zinc-600 transition-all">
                                     <div class="flex justify-between mb-2">
                                         <span class="text-zinc-200 font-medium">Node 01 - Premium</span>

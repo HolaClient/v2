@@ -133,14 +133,13 @@ module.exports = {
     },
     "locations": {
         "get": async function (a) {
-            let b = await locations.locations()
+            let b = await locations.locations(settings)
             let c = b.find(i => i.attributes.id === parseInt(a))
             return c || ""
         },
-        "getAll": async function (b) {
-            let a = await locations.locations()
-            let c = a.find(i => i.attributes.id === parseInt(b))
-            return c.attributes.relationships.eggs.data || []
+        "getAll": async function () {
+            let a = await locations.locations(settings);
+            return a || []
         },
         "modify": locations.modifySettings,
         "create": locations.createLocation,

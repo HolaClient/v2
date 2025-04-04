@@ -52,7 +52,7 @@
         });
         
         tabContents.forEach(content => {
-            content.style.display = "none";
+            content.classList.add('hidden');
         });
         
         let activeButton = document.getElementById(`tab-${tabId}`);
@@ -62,11 +62,35 @@
         }
         
         if (activeContent) {
-            activeContent.style.display = "block";
+            activeContent.classList.remove('hidden');
         }
         
         currentTabIndex = tabs.indexOf(tabId);
+        
+        updateNavigationButtons();
         updateSummary();
+    }
+    
+    function updateNavigationButtons() {
+        // Hide previous button on first tab
+        const prevButtons = document.querySelectorAll('.prev-btn');
+        prevButtons.forEach(btn => {
+            if (currentTabIndex === 0) {
+                btn.classList.add('invisible');
+            } else {
+                btn.classList.remove('invisible');
+            }
+        });
+        
+        // Hide next button on last tab
+        const nextButtons = document.querySelectorAll('.next-btn');
+        nextButtons.forEach(btn => {
+            if (currentTabIndex === tabs.length - 1) {
+                btn.classList.add('invisible');
+            } else {
+                btn.classList.remove('invisible');
+            }
+        });
     }
     
     function updateSummary() {
@@ -81,6 +105,8 @@
             formData.description = serverDescription.value;
         }
         
+        summaryElements.location.textContent = formData.location || '-';
+        summaryElements.node.textContent = formData.node || '-';
         summaryElements.cpu.textContent = `${formData.cpu} Cores`;
         summaryElements.ram.textContent = `${formData.ram} GB`;
         summaryElements.storage.textContent = `${formData.storage} GB`;
@@ -186,7 +212,7 @@
     }
     
     function setupSelectionCards() {
-        let locationCards = document.querySelectorAll('#content-location div[class*="cursor-pointer"]');
+        let locationCards = document.querySelectorAll('#locations-container div[class*="cursor-pointer"]');
         
         locationCards.forEach(card => {
             card.addEventListener('click', () => {
@@ -204,7 +230,7 @@
             });
         });
         
-        let nodeCards = document.querySelectorAll('#content-node div[class*="cursor-pointer"]');
+        let nodeCards = document.querySelectorAll('#nodes-container div[class*="cursor-pointer"]');
         
         nodeCards.forEach(card => {
             card.addEventListener('click', () => {
@@ -284,6 +310,7 @@
     
     setTimeout(() => {
         setupSelectionCards();
-        switchTab(tabs[currentTabIndex]);
+        updateNavigationButtons();
+        updateSummary();
     }, 500);
 })();
