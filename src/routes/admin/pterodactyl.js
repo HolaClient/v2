@@ -61,13 +61,17 @@ module.exports = async () => {
         if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         try {
-            const config = db.get("pterodactyl") || { 
-                locations: [], 
-                nodes: [], 
-                softwares: [] 
+            // Ensure we have a properly structured configuration object
+            const config = db.get("pterodactyl") || {}; 
+            
+            // Make sure all expected properties exist
+            const normalizedConfig = {
+                locations: Array.isArray(config.locations) ? config.locations : [],
+                nodes: Array.isArray(config.nodes) ? config.nodes : [],
+                softwares: Array.isArray(config.softwares) ? config.softwares : []
             };
             
-            res.json({ success: true, config });
+            res.json({ success: true, config: normalizedConfig });
         } catch (error) {
             console.error("Failed to fetch Pterodactyl configuration:", error);
             res.json({ success: false, error: "Failed to fetch configuration" });
@@ -80,14 +84,22 @@ module.exports = async () => {
         if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         try {
-            const { locations, nodes, softwares } = req.body;
-
-            db.set("pterodactyl", {
-                locations: locations || [],
-                nodes: nodes || [],
-                softwares: softwares || []
-            });
-
+            // Validate the incoming data structure
+            const data = req.body || {};
+            
+            // Create a sanitized config object with proper defaults
+            const config = {
+                locations: Array.isArray(data.locations) ? data.locations : [],
+                nodes: Array.isArray(data.nodes) ? data.nodes : [],
+                softwares: Array.isArray(data.softwares) ? data.softwares : []
+            };
+            
+            // Save the config to the database
+            db.set("pterodactyl", config);
+            
+            // Log the successful update
+            hc.modules.HCL.log("admin", `Pterodactyl configuration updated by ${req.session.userinfo.email}`);
+            
             res.json({ success: true });
         } catch (error) {
             console.error("Failed to save Pterodactyl configuration:", error);

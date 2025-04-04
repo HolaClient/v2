@@ -63,7 +63,6 @@ data = (req) => (
                         </div>
                     </div>
                     
-                    <!-- Add Location Modal -->
                     <div id="add-location-modal" class="fixed inset-0 bg-black/50 z-50 justify-center items-center hidden">
                         <div class="bg-zinc-900 w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-zinc-800 rounded-xl">
                             <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
@@ -174,7 +173,6 @@ data = (req) => (
                         </div>
                     </div>
 
-                    <!-- Add Node Modal -->
                     <div id="add-node-modal" class="fixed inset-0 bg-black/50 z-50 justify-center items-center hidden">
                         <div class="bg-zinc-900 w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-zinc-800 rounded-xl">
                             <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
@@ -192,7 +190,6 @@ data = (req) => (
                                 </div>
                                 
                                 <div id="ptero-node-locations" class="mb-4">
-                                    <!-- Location groups will be added here dynamically -->
                                 </div>
                                 
                                 <div class="flex justify-between items-center mt-4" id="ptero-node-pagination">
@@ -285,7 +282,6 @@ data = (req) => (
                         </div>
                     </div>
 
-                    <!-- Add Software Modal -->
                     <div id="add-software-modal" class="fixed inset-0 bg-black/50 z-50 justify-center items-center hidden">
                         <div class="bg-zinc-900 w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-zinc-800 rounded-xl">
                             <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
@@ -303,7 +299,6 @@ data = (req) => (
                                 </div>
                                 
                                 <div id="ptero-software-nests" class="mb-4">
-                                    <!-- Nest groups will be added here dynamically -->
                                 </div>
                                 
                                 <div class="flex justify-between items-center mt-4" id="ptero-software-pagination">
