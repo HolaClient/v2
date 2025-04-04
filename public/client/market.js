@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
     const modal = document.getElementById('market-modal');
     const modalContent = document.getElementById('modal-content');
     const modalBackdrop = document.getElementById('modal-backdrop');
@@ -189,4 +189,4 @@ document.addEventListener('DOMContentLoaded', () => {
             closeTransactionModal();
         }
     });
-});
+})();

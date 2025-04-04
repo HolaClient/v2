@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
     const setupTabs = () => {
         const tabButtons = document.querySelectorAll('.account-tab-btn');
         const tabContents = document.querySelectorAll('.account-tab-content');
@@ -206,4 +206,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     setupTabs();
     setupForms();
-});
+})();

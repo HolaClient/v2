@@ -257,7 +257,8 @@ function update(url, { content, props }) {
                         newScript.textContent = oldScript.textContent;
                     }
                     
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                    oldScript.remove();
+                    document.body.appendChild(newScript);
                 });
             } else {
                 document.body.textContent = content;

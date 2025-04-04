@@ -182,6 +182,27 @@ async function sendCommand(pterodactyl, a, b) {
     }
 };
 
+async function create(pterodactyl, a) {
+    try {
+        if (pterodactyl && pterodactyl.domain && pterodactyl.app) {
+            let d = await fetch(`${pterodactyl.domain}/api/application/servers`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${pterodactyl.app}`,
+                },
+                body: JSON.stringify(a)
+            });
+            let e = await d.json();
+            return { success: true, data: e }
+        } else {
+            return { success: false, error: 0 }
+        }
+    } catch (error) {
+        return { success: false, error: error }
+    }
+}
+
 module.exports = {
-    servers, suspend, assign, delete: remove, files, changeState, sendCommand
+    servers, suspend, assign, delete: remove, files, changeState, sendCommand, create
 }

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+(function () {
     const settingsForm = document.getElementById('settings-form');
     const settingsInputs = document.querySelectorAll('.settings-input');
     const settingsPopup = document.getElementById('settings-popup');
@@ -110,4 +110,4 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 300);
         }, 3000);
     }
-});
+})();

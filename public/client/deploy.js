@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
     let tabButtons = document.querySelectorAll('.tab-btn');
     let tabContents = document.querySelectorAll('.tab-content');
     let nextButtons = document.querySelectorAll('.next-btn');
@@ -286,4 +286,4 @@ document.addEventListener('DOMContentLoaded', () => {
         setupSelectionCards();
         switchTab(tabs[currentTabIndex]);
     }, 500);
-});
+})();
