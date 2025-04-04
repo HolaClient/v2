@@ -72,7 +72,6 @@
     }
     
     function updateNavigationButtons() {
-        // Hide previous button on first tab
         const prevButtons = document.querySelectorAll('.prev-btn');
         prevButtons.forEach(btn => {
             if (currentTabIndex === 0) {
@@ -82,7 +81,6 @@
             }
         });
         
-        // Hide next button on last tab
         const nextButtons = document.querySelectorAll('.next-btn');
         nextButtons.forEach(btn => {
             if (currentTabIndex === tabs.length - 1) {

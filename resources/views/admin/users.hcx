@@ -9,173 +9,120 @@ data = (req) => (
         <div class="w-full space-y-6 p-6">
             <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl text-zinc-200">Roles</h2>
-                    <button onclick="showModal('create-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">
-                        Create Role
-                    </button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="text-left text-zinc-400 text-sm">
-                                <th class="p-2">Name</th>
-                                <th class="p-2">Level</th>
-                                <th class="p-2">Intents</th>
-                                <th class="p-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="roles-table" class="text-zinc-300">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl text-zinc-200">User Roles</h2>
+                    <h2 class="text-xl text-zinc-200">Users</h2>
                     <div class="flex space-x-2">
-                        <input type="text" id="user-search" placeholder="Search users..." class="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                        <input type="text" id="user-filter" placeholder="Filter users..." class="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                        <button onclick="showModal('create-user-modal')" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                            Create User
+                        </button>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead>
                             <tr class="text-left text-zinc-400 text-sm">
-                                <th class="p-2">User</th>
-                                <th class="p-2">Roles</th>
-                                <th class="p-2">Custom Intents</th>
+                                <th class="p-2">ID</th>
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Email</th>
+                                <th class="p-2">Created</th>
+                                <th class="p-2">Status</th>
                                 <th class="p-2">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="users-table" class="text-zinc-300">
+                            <!-- User data will be loaded here -->
                         </tbody>
                     </table>
                 </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <div class="text-sm text-zinc-500">
+                        <span id="total-users">0</span> users total
+                    </div>
+                    <div class="flex space-x-1">
+                        <button id="prev-page" class="px-3 py-1 rounded bg-zinc-800 text-zinc-400 hover:bg-zinc-700 disabled:opacity-50">Previous</button>
+                        <span id="page-info" class="px-3 py-1">Page 1</span>
+                        <button id="next-page" class="px-3 py-1 rounded bg-zinc-800 text-zinc-400 hover:bg-zinc-700 disabled:opacity-50">Next</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="create-role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <!-- Create User Modal -->
+        <div id="create-user-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg text-zinc-200">Create Role</h3>
-                    <button onclick="hideModal('create-role-modal')" class="text-zinc-400 hover:text-zinc-300">
+                    <h3 class="text-lg text-zinc-200">Create New User</h3>
+                    <button onclick="hideModal('create-user-modal')" class="text-zinc-400 hover:text-zinc-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
-                <form id="create-role-form" class="space-y-4">
+                <form id="create-user-form" class="space-y-4">
                     <div>
-                        <label class="text-zinc-400 text-sm">Name</label>
-                        <input type="text" name="name" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                        <label class="text-zinc-400 text-sm">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
                     </div>
                     <div>
-                        <label class="text-zinc-400 text-sm">Level</label>
-                        <input type="number" name="level" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                        <label class="text-zinc-400 text-sm">Email</label>
+                        <input type="email" name="email" required class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
                     </div>
                     <div>
-                        <label class="text-zinc-400 text-sm">Intents</label>
-                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
+                        <label class="text-zinc-400 text-sm">Password</label>
+                        <input type="password" name="password" required class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Initial Role</label>
+                        <select name="role" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700">
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
                     <div class="flex justify-end space-x-2">
-                        <button type="button" onclick="hideModal('create-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
+                        <button type="button" onclick="hideModal('create-user-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">Create</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="edit-role-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <!-- Edit User Modal -->
+        <div id="edit-user-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg text-zinc-200">Edit Role</h3>
-                    <button onclick="hideModal('edit-role-modal')" class="text-zinc-400 hover:text-zinc-300">
+                    <h3 class="text-lg text-zinc-200">Edit User</h3>
+                    <button onclick="hideModal('edit-user-modal')" class="text-zinc-400 hover:text-zinc-300">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                     </button>
                 </div>
-                <form id="edit-role-form" class="space-y-4">
-                    <input type="hidden" name="id" />
-                    <div>
-                        <label class="text-zinc-400 text-sm">Name</label>
-                        <input type="text" name="name" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
-                    </div>
-                    <div>
-                        <label class="text-zinc-400 text-sm">Level</label>
-                        <input type="number" name="level" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
-                    </div>
-                    <div>
-                        <label class="text-zinc-400 text-sm">Intents</label>
-                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
-                        </select>
-                    </div>
-                    <div class="flex justify-end space-x-2">
-                        <button type="button" onclick="hideModal('edit-role-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div id="edit-user-roles-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg text-zinc-200">Edit User Roles</h3>
-                    <button onclick="hideModal('edit-user-roles-modal')" class="text-zinc-400 hover:text-zinc-300">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <form id="edit-user-roles-form" class="space-y-4">
+                <form id="edit-user-form" class="space-y-4">
                     <input type="hidden" name="userId" />
                     <div>
-                        <label class="text-zinc-400 text-sm">User</label>
-                        <div id="user-email" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"></div>
+                        <label class="text-zinc-400 text-sm">Full Name</label>
+                        <input type="text" name="name" required class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
                     </div>
                     <div>
-                        <label class="text-zinc-400 text-sm">Roles</label>
-                        <select multiple name="roles" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
+                        <label class="text-zinc-400 text-sm">Email</label>
+                        <input type="email" name="email" required class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"/>
+                    </div>
+                    <div>
+                        <label class="text-zinc-400 text-sm">Status</label>
+                        <select name="status" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700">
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                            <option value="banned">Banned</option>
                         </select>
                     </div>
                     <div class="flex justify-end space-x-2">
-                        <button type="button" onclick="hideModal('edit-user-roles-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
+                        <button type="button" onclick="hideModal('edit-user-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
+                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">Save</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="edit-user-intents-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-zinc-900 rounded-xl p-6 w-full max-w-md border border-zinc-800">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg text-zinc-200">Edit User Intents</h3>
-                    <button onclick="hideModal('edit-user-intents-modal')" class="text-zinc-400 hover:text-zinc-300">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <form id="edit-user-intents-form" class="space-y-4">
-                    <input type="hidden" name="userId" />
-                    <div>
-                        <label class="text-zinc-400 text-sm">User</label>
-                        <div id="user-email-intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700"></div>
-                    </div>
-                    <div>
-                        <label class="text-zinc-400 text-sm">Intents</label>
-                        <select multiple name="intents" class="w-full px-3 py-2 rounded-lg bg-zinc-800 text-zinc-300 border border-zinc-700 min-h-[100px]">
-                        </select>
-                    </div>
-                    <div class="flex justify-end space-x-2">
-                        <button type="button" onclick="hideModal('edit-user-intents-modal')" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Cancel</button>
-                        <button type="submit" class="px-4 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-colors">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
         <script src="/assets/admin/users.js"></script>
     </>
 )

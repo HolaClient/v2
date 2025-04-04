@@ -95,7 +95,7 @@ data = (req) => {
                 </div>
             </div>
 
-            <div class="w-full mt-10 px-4 z-0 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="w-full mt-10 px-4 z-0 grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="w-full">
                     <h1 class="text-zinc-200 text-xl">Quick Links</h1>
                     <div class="grid grid-cols-1 md:grid-cols-2 mt-2 gap-4">

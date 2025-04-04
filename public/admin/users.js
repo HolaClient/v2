@@ -1,349 +1,348 @@
 (function () {
-    const rolesTable = document.getElementById('roles-table');
-    const usersTable = document.getElementById('users-table');
-    const createRoleForm = document.getElementById('create-role-form');
-    const editRoleForm = document.getElementById('edit-role-form');
-    const editUserRolesForm = document.getElementById('edit-user-roles-form');
-    const editUserIntentsForm = document.getElementById('edit-user-intents-form');
-    const userSearch = document.getElementById('user-search');
-
-    let roles = [];
-    let users = [];
-    let currentRoleId = null;
-    let currentUserId = null;
-
-    async function initialize() {
-        await Promise.all([
-            loadRoles(),
-            loadUsers()
-        ]);
-        populateIntentSelects();
-    }
-
-    async function loadRoles() {
-        const response = await fetch('/api/admin/roles');
-        const data = await response.json();
-        if (data.success) {
-            roles = data.data;
-            renderRoles();
-            populateRoleSelects();
-        }
-    }
-
-    function renderRoles() {
-        rolesTable.innerHTML = roles.map(role => `
-        <tr class="border-t border-zinc-800">
-            <td class="p-2">${role.name}</td>
-            <td class="p-2">${role.level}</td>
-            <td class="p-2">
-                <div class="flex flex-wrap gap-1">
-                    ${role.intents.slice(0, 3).map(intent =>
-            `<span class="px-2 py-0.5 text-xs rounded-full bg-zinc-800">${intent}</span>`
-        ).join('')}
-                    ${role.intents.length > 3 ?
-                `<span class="px-2 py-0.5 text-xs rounded-full bg-zinc-800">+${role.intents.length - 3} more</span>`
-                : ''}
-                </div>
-            </td>
-            <td class="p-2">
-                <div class="flex space-x-2">
-                    <button onclick="editRole('${role.id}')" class="px-2 py-1 text-sm rounded bg-zinc-800 hover:bg-zinc-700">
-                        Edit
-                    </button>
-                    <button onclick="deleteRole('${role.id}')" class="px-2 py-1 text-sm rounded bg-red-900/50 hover:bg-red-900/70">
-                        Delete
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `).join('');
-    }
-
-    function populateIntentSelects() {
-        const intentSelects = document.querySelectorAll('select[name="intents"]');
-        if (!intentSelects.length) return;
-
-        const allIntents = new Set();
-
-        const commonIntents = [
-            "hc.pages.landing.*",
-            "hc.pages.auth.*",
-            "hc.pages.home",
-            "hc.pages.dashboard",
-            "hc.pages.servers.*",
-            "hc.pages.economy.*",
-            "hc.pages.account.*",
-            "hc.pages.notifications.*",
-            "hc.pages.requests.*",
-            "hc.pages.market.*",
-            "hc.pages.chat.*",
-            "hc.roles.guest",
-            "hc.roles.user",
-            "hc.roles.mod",
-            "hc.roles.admin",
-            "hc.pages.admin.*",
-            "hc.*"
-        ];
-
-        commonIntents.forEach(intent => allIntents.add(intent));
-        roles.forEach(role => role.intents.forEach(intent => allIntents.add(intent)));
-        users.forEach(user => (user.intents || []).forEach(intent => allIntents.add(intent)));
-
-        const sortedIntents = Array.from(allIntents).sort();
-
-        intentSelects.forEach(select => {
-            select.innerHTML = sortedIntents.map(intent =>
-                `<option value="${intent}">${intent}</option>`
-            ).join('');
+    let currentPage = 1;
+    const usersPerPage = 10;
+    let totalUsers = 0;
+    
+    console.log('Admin users page loaded, initializing...');
+    
+        fetch('/api/admin/users?page=1&limit=10')
+        .then(response => {
+            console.log('Initial API test response status:', response.status);
+            if (!response.ok) throw new Error(`API status ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Initial API test data:', data);
+        })
+        .catch(error => {
+            console.error('Initial API test error:', error);
+        })
+        .finally(() => {
+            loadUsers();
         });
-    }
-
-    function populateRoleSelects() {
-        const roleSelects = document.querySelectorAll('select[name="roles"]');
-        if (!roleSelects.length) return;
-
-        roleSelects.forEach(select => {
-            select.innerHTML = roles.map(role =>
-                `<option value="${role.name}">${role.name}</option>`
-            ).join('');
-        });
-    }
-
-    function showModal(modalId) {
-        document.getElementById(modalId).classList.remove('hidden');
-    }
-
-    function hideModal(modalId) {
-        document.getElementById(modalId).classList.add('hidden');
-    }
-
-    function editRole(id) {
-        const role = roles.find(r => r.id === id);
-        if (!role) return;
-
-        currentRoleId = id;
-        editRoleForm.elements.id.value = id;
-        editRoleForm.elements.name.value = role.name;
-        editRoleForm.elements.level.value = role.level;
-
-        const intentSelect = editRoleForm.elements.intents;
-        for (let i = 0; i < intentSelect.options.length; i++) {
-            intentSelect.options[i].selected = role.intents.includes(intentSelect.options[i].value);
+    
+    document.getElementById('create-user-form').addEventListener('submit', createUser);
+    document.getElementById('edit-user-form').addEventListener('submit', updateUser);
+    
+    document.getElementById('next-page').addEventListener('click', () => {
+        currentPage++;
+        loadUsers();
+    });
+    
+    document.getElementById('prev-page').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadUsers();
         }
-
-        showModal('edit-role-modal');
+    });
+    
+    document.getElementById('user-filter').addEventListener('input', debounce(() => {
+        currentPage = 1;
+        loadUsers();
+    }, 300));
+    
+    function loadUsers() {
+        const filter = document.getElementById('user-filter').value;
+        const usersTable = document.getElementById('users-table');
+        
+        usersTable.innerHTML = '<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>';
+        
+        console.log(`Fetching users: page=${currentPage}, limit=${usersPerPage}, filter=${filter}`);
+        
+                setTimeout(() => {
+            fetch(`/api/admin/users?page=${currentPage}&limit=${usersPerPage}&filter=${encodeURIComponent(filter)}`)
+                .then(response => {
+                    console.log('API response status:', response.status);
+                    if (!response.ok) throw new Error(`API error: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Users data received:', data);
+                    totalUsers = data.total || 0;
+                    document.getElementById('total-users').textContent = totalUsers;
+                    
+                    document.getElementById('page-info').textContent = `Page ${currentPage}`;
+                    document.getElementById('prev-page').disabled = currentPage <= 1;
+                    document.getElementById('next-page').disabled = currentPage * usersPerPage >= totalUsers;
+                    
+                    usersTable.innerHTML = '';
+                    
+                    if (data.users && data.users.length > 0) {
+                        data.users.forEach(user => {
+                            renderUserRow(user, usersTable);
+                        });
+                    } else {
+                        usersTable.innerHTML = '<tr><td colspan="6" class="text-center py-4">No users found</td></tr>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading users:', error);
+                    usersTable.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-red-400">Error loading users: ${error.message}</td></tr>`;
+                });
+        }, 100);
     }
-
-    async function deleteRole(id) {
-        if (!confirm('Are you sure you want to delete this role?')) return;
-
-        const response = await fetch(`/api/admin/roles/${id}`, {
-            method: 'DELETE'
-        });
-        const data = await response.json();
-        if (data.success) {
-            await loadRoles();
-        } else {
-            alert('Failed to delete role: ' + (data.message || 'Unknown error'));
+    
+    function renderUserRow(user, usersTable) {
+        const row = document.createElement('tr');
+        row.className = 'border-t border-zinc-800';
+        
+        let createdDate;
+        try {
+            createdDate = new Date(user.createdAt);
+        } catch (e) {
+            createdDate = new Date();
         }
-    }
-
-    function editUserRoles(userId) {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        currentUserId = userId;
-        editUserRolesForm.elements.userId.value = userId;
-        document.getElementById('user-email').textContent = user.email || 'Unknown';
-
-        const roleSelect = editUserRolesForm.elements.roles;
-        for (let i = 0; i < roleSelect.options.length; i++) {
-            roleSelect.options[i].selected = (user.roles || []).includes(roleSelect.options[i].value);
+        const formattedDate = createdDate.toLocaleDateString();
+        
+        let statusBadge = '';
+        switch (user.status) {
+            case 'active':
+                statusBadge = '<span class="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">Active</span>';
+                break;
+            case 'suspended':
+                statusBadge = '<span class="px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs">Suspended</span>';
+                break;
+            case 'banned':
+                statusBadge = '<span class="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs">Banned</span>';
+                break;
+            default:
+                statusBadge = '<span class="px-2 py-1 rounded-full bg-zinc-500/20 text-zinc-400 text-xs">Unknown</span>';
         }
-
-        showModal('edit-user-roles-modal');
-    }
-
-    function editUserIntents(userId) {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        currentUserId = userId;
-        editUserIntentsForm.elements.userId.value = userId;
-        document.getElementById('user-email-intents').textContent = user.email || 'Unknown';
-
-        const intentSelect = editUserIntentsForm.elements.intents;
-        for (let i = 0; i < intentSelect.options.length; i++) {
-            intentSelect.options[i].selected = (user.intents || []).includes(intentSelect.options[i].value);
-        }
-
-        showModal('edit-user-intents-modal');
-    }
-
-    async function loadUsers() {
-        const response = await fetch('/api/admin/users');
-        const data = await response.json();
-        if (data.success) {
-            users = data.data;
-            renderUsers();
-        }
-    }
-
-    function renderUsers() {
-        const filteredUsers = userSearch.value ?
-            users.filter(user =>
-                user.email && user.email.toLowerCase().includes(userSearch.value.toLowerCase())
-            ) : users;
-
-        usersTable.innerHTML = filteredUsers.map(user => `
-        <tr class="border-t border-zinc-800">
-            <td class="p-2">${user.email || 'Unknown'}</td>
+        
+        row.innerHTML = `
+            <td class="p-2">${user.id || 'N/A'}</td>
+            <td class="p-2">${user.name || 'Unknown'}</td>
+            <td class="p-2">${user.email || 'No email'}</td>
+            <td class="p-2">${formattedDate}</td>
+            <td class="p-2">${statusBadge}</td>
             <td class="p-2">
-                <div class="flex flex-wrap gap-1">
-                    ${(user.roles || []).map(role =>
-            `<span class="px-2 py-0.5 text-xs rounded-full bg-zinc-800">${role}</span>`
-        ).join('')}
-                </div>
-            </td>
-            <td class="p-2">
-                <div class="flex flex-wrap gap-1">
-                    ${(user.intents || []).slice(0, 3).map(intent =>
-            `<span class="px-2 py-0.5 text-xs rounded-full bg-zinc-800">${intent}</span>`
-        ).join('')}
-                    ${(user.intents || []).length > 3 ?
-                `<span class="px-2 py-0.5 text-xs rounded-full bg-zinc-800">+${user.intents.length - 3} more</span>`
-                : ''}
-                </div>
-            </td>
-            <td class="p-2">
-                <div class="flex space-x-2">
-                    <button onclick="editUserRoles('${user.id}')" class="px-2 py-1 text-sm rounded bg-zinc-800 hover:bg-zinc-700">
-                        Edit Roles
+                <div class="flex space-x-1">
+                    <button onclick="editUser('${user.id}')" class="p-1 text-blue-400 hover:text-blue-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                        </svg>
                     </button>
-                    <button onclick="editUserIntents('${user.id}')" class="px-2 py-1 text-sm rounded bg-zinc-800 hover:bg-zinc-700">
-                        Edit Intents
+                    <button onclick="resetPassword('${user.id}')" class="p-1 text-yellow-400 hover:text-yellow-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                        </svg>
+                    </button>
+                    <button onclick="confirmDeleteUser('${user.id}')" class="p-1 text-red-400 hover:text-red-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
                     </button>
                 </div>
             </td>
-        </tr>
-    `).join('');
+        `;
+        
+        usersTable.appendChild(row);
     }
-
-    createRoleForm.addEventListener('submit', async (e) => {
+    
+    function createUser(e) {
         e.preventDefault();
-        const formData = new FormData(createRoleForm);
-        const roleData = {
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        const userData = {
             name: formData.get('name'),
-            level: parseInt(formData.get('level')),
-            intents: Array.from(formData.getAll('intents'))
+            email: formData.get('email'),
+            password: formData.get('password'),
+            role: formData.get('role')
         };
-
-        if (!roleData.name || roleData.level === undefined || !roleData.intents.length) {
-            alert('Please fill out all fields');
-            return;
-        }
-
-        const response = await fetch('/api/admin/roles', {
+        
+        fetch('/api/admin/users', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(roleData)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                hideModal('create-user-modal');
+                form.reset();
+                loadUsers();
+                showNotification('User created successfully', 'success');
+            } else {
+                showNotification(data.message || 'Failed to create user', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating user:', error);
+            showNotification('An error occurred', 'error');
         });
-
-        const data = await response.json();
-        if (data.success) {
-            await loadRoles();
-            hideModal('create-role-modal');
-            createRoleForm.reset();
-        } else {
-            alert('Failed to create role: ' + (data.message || 'Unknown error'));
-        }
-    });
-
-    editRoleForm.addEventListener('submit', async (e) => {
+    }
+    
+    function updateUser(e) {
         e.preventDefault();
-        const formData = new FormData(editRoleForm);
-        const roleData = {
+        const form = e.target;
+        const formData = new FormData(form);
+        const userId = formData.get('userId');
+        
+        const userData = {
             name: formData.get('name'),
-            level: parseInt(formData.get('level')),
-            intents: Array.from(formData.getAll('intents'))
+            email: formData.get('email'),
+            status: formData.get('status')
         };
-
-        if (!roleData.name || roleData.level === undefined || !roleData.intents.length) {
-            alert('Please fill out all fields');
-            return;
-        }
-
-        const roleId = formData.get('id');
-        const response = await fetch(`/api/admin/roles/${roleId}`, {
+        
+        fetch(`/api/admin/users/${userId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(roleData)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                hideModal('edit-user-modal');
+                loadUsers();
+                showNotification('User updated successfully', 'success');
+            } else {
+                showNotification(data.message || 'Failed to update user', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating user:', error);
+            showNotification('An error occurred', 'error');
         });
+    }
 
-        const data = await response.json();
-        if (data.success) {
-            await loadRoles();
-            hideModal('edit-role-modal');
-        } else {
-            alert('Failed to update role: ' + (data.message || 'Unknown error'));
-        }
+    document.addEventListener('reload-users', function() {
+        loadUsers();
     });
+})();
 
-    editUserRolesForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(editUserRolesForm);
-        const userId = formData.get('userId');
-        const selectedRoles = Array.from(formData.getAll('roles'));
+function editUser(userId) {
+    fetch(`/api/admin/users/${userId}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch user');
+            return response.json();
+        })
+        .then(data => {
+            if (data.user) {
+                const form = document.getElementById('edit-user-form');
+                form.querySelector('[name="userId"]').value = data.user.id;
+                form.querySelector('[name="name"]').value = data.user.name;
+                form.querySelector('[name="email"]').value = data.user.email;
+                form.querySelector('[name="status"]').value = data.user.status || 'active';
+                showModal('edit-user-modal');
+            } else {
+                showNotification('User not found', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching user:', error);
+            showNotification('An error occurred', 'error');
+        });
+}
 
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        const response = await fetch(`/api/admin/users/${userId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                roles: selectedRoles,
-                intents: user.intents || []
+function resetPassword(userId) {
+    if (confirm('Send password reset email to this user?')) {
+        fetch(`/api/admin/users/${userId}/reset-password`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Password reset email sent', 'success');
+                } else {
+                    showNotification(data.message || 'Failed to send reset email', 'error');
+                }
             })
-        });
+            .catch(error => {
+                console.error('Error resetting password:', error);
+                showNotification('An error occurred', 'error');
+            });
+    }
+}
 
-        const data = await response.json();
-        if (data.success) {
-            await loadUsers();
-            hideModal('edit-user-roles-modal');
-        } else {
-            alert('Failed to update user roles: ' + (data.message || 'Unknown error'));
-        }
-    });
-
-    editUserIntentsForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(editUserIntentsForm);
-        const userId = formData.get('userId');
-        const selectedIntents = Array.from(formData.getAll('intents'));
-
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        const response = await fetch(`/api/admin/users/${userId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                roles: user.roles || [],
-                intents: selectedIntents
+function confirmDeleteUser(userId) {
+    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+        fetch(`/api/admin/users/${userId}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.dispatchEvent(new Event('reload-users'));
+                    showNotification('User deleted successfully', 'success');
+                } else {
+                    showNotification(data.message || 'Failed to delete user', 'error');
+                }
             })
-        });
+            .catch(error => {
+                console.error('Error deleting user:', error);
+                showNotification('An error occurred', 'error');
+            });
+    }
+}
 
-        const data = await response.json();
-        if (data.success) {
-            await loadUsers();
-            hideModal('edit-user-intents-modal');
-        } else {
-            alert('Failed to update user intents: ' + (data.message || 'Unknown error'));
-        }
+function showModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+}
+
+function hideModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+function showNotification(message, type = 'info') {
+    let container = document.getElementById('notification-container');
+    
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `p-3 rounded-lg shadow-lg flex items-center justify-between max-w-sm transition-all transform translate-x-0`;
+    
+    switch (type) {
+        case 'success':
+            notification.classList.add('bg-green-600', 'text-white');
+            break;
+        case 'error':
+            notification.classList.add('bg-red-600', 'text-white');
+            break;
+        default:
+            notification.classList.add('bg-blue-600', 'text-white');
+    }
+    
+    notification.innerHTML = `
+        <div class="flex items-center">
+            <span>${message}</span>
+        </div>
+        <button class="ml-3 text-white hover:text-zinc-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    `;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('opacity-0');
+        setTimeout(() => {
+            notification.remove();
+            if (container.children.length === 0) {
+                container.remove();
+            }
+        }, 300);
+    }, 5000);
+    
+    notification.querySelector('button').addEventListener('click', () => {
+        notification.classList.add('opacity-0');
+        setTimeout(() => notification.remove(), 300);
     });
+}
 
-    userSearch.addEventListener('input', renderUsers);
-
-    initialize();
-})()
+function debounce(func, delay) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+}
