@@ -1,0 +1,12 @@
+1. Co-relate nodes and locations in deploy.
+2. Finish deployment function.
+3. Finish Economy features.
+4. Finalize market.
+5. Finalize account management.
+6. Finish admin home.
+7. Finalize admin servers view.
+8. Fix permissions page in admin (offload functions from local scope to global scope).
+9. Add localization.
+10. Add notification system.
+11. Fix UI for mobiles.
+12. Add search functionality.

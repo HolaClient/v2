@@ -21,7 +21,7 @@ function get(a) {
 
 function build() {
     let user = {
-        pages: ["home", "dashboard", "servers.*", "economy.*", "account.*", "notifications.*", "requests.*", "market.*", "chat.*"]
+        pages: ["home", "dashboard", "servers.*", "economy.*", "account.*", "notifications.*", "requests.*", "market.*", "chat.*", "deploy.*"]
     }
     let mod = {
         pages: ["home", "statistics.*", "servers.*", "users.*", "posts.*", "alerts.*", "locales.*"]
