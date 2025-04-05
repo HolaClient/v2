@@ -1,12 +1,33 @@
 1. Co-relate nodes and locations in deploy.
+    Show filtered nodes from selected location.
+
 2. Finish deployment function.
+
 3. Finish Economy features.
+    a. Add J4R.
+    b. Add Linkpays.
+    c. Add ShareUS.
+    d. Add Linkvertise.
+
 4. Finalize market.
-5. Finalize account management.
-6. Finish admin home.
-7. Finalize admin servers view.
-8. Fix permissions page in admin (offload functions from local scope to global scope).
+    Make it actually work.
+
+5. Fix UI for mobiles.
+    Only sidebar adjustment is required.
+
+6. Finalize account management.
+
+7. Finish admin home.
+    a. Create dashboard with key metrics
+    b. Add system status indicators
+    c. Implement quick action buttons
+
+8. Finalize admin servers view.
+    Remove dummy and show actual servers.
+
 9. Add localization.
+
 10. Add notification system.
-11. Fix UI for mobiles.
-12. Add search functionality.
+
+11. Add search functionality.
+     Pages searching is enough for now.

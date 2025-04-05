@@ -7,8 +7,8 @@
     const editUserIntentsForm = document.getElementById('edit-user-intents-form');
     const userSearch = document.getElementById('user-search');
 
-    let roles = [];
-    let users = [];
+    window.roles = [];
+    window.users = [];
     let currentRoleId = null;
     let currentUserId = null;
 
@@ -20,18 +20,18 @@
         populateIntentSelects();
     }
 
-    async function loadRoles() {
+    window.loadRoles = async function() {
         const response = await fetch('/api/admin/roles');
         const data = await response.json();
         if (data.success) {
-            roles = data.data;
+            window.roles = data.data;
             renderRoles();
             populateRoleSelects();
         }
     }
 
     function renderRoles() {
-        rolesTable.innerHTML = roles.map(role => `
+        rolesTable.innerHTML = window.roles.map(role => `
         <tr class="border-t border-zinc-800">
             <td class="p-2">${role.name}</td>
             <td class="p-2">${role.level}</td>
@@ -86,8 +86,8 @@
         ];
 
         commonIntents.forEach(intent => allIntents.add(intent));
-        roles.forEach(role => role.intents.forEach(intent => allIntents.add(intent)));
-        users.forEach(user => (user.intents || []).forEach(intent => allIntents.add(intent)));
+        window.roles.forEach(role => role.intents.forEach(intent => allIntents.add(intent)));
+        window.users.forEach(user => (user.intents || []).forEach(intent => allIntents.add(intent)));
 
         const sortedIntents = Array.from(allIntents).sort();
 
@@ -103,97 +103,34 @@
         if (!roleSelects.length) return;
 
         roleSelects.forEach(select => {
-            select.innerHTML = roles.map(role =>
+            select.innerHTML = window.roles.map(role =>
                 `<option value="${role.name}">${role.name}</option>`
             ).join('');
         });
     }
 
-    function showModal(modalId) {
+    window.showModal = function(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }
 
-    function hideModal(modalId) {
+    window.hideModal = function(modalId) {
         document.getElementById(modalId).classList.add('hidden');
     }
 
-    function editRole(id) {
-        const role = roles.find(r => r.id === id);
-        if (!role) return;
-
-        currentRoleId = id;
-        editRoleForm.elements.id.value = id;
-        editRoleForm.elements.name.value = role.name;
-        editRoleForm.elements.level.value = role.level;
-
-        const intentSelect = editRoleForm.elements.intents;
-        for (let i = 0; i < intentSelect.options.length; i++) {
-            intentSelect.options[i].selected = role.intents.includes(intentSelect.options[i].value);
-        }
-
-        showModal('edit-role-modal');
-    }
-
-    async function deleteRole(id) {
-        if (!confirm('Are you sure you want to delete this role?')) return;
-
-        const response = await fetch(`/api/admin/roles/${id}`, {
-            method: 'DELETE'
-        });
-        const data = await response.json();
-        if (data.success) {
-            await loadRoles();
-        } else {
-            alert('Failed to delete role: ' + (data.message || 'Unknown error'));
-        }
-    }
-
-    function editUserRoles(userId) {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        currentUserId = userId;
-        editUserRolesForm.elements.userId.value = userId;
-        document.getElementById('user-email').textContent = user.email || 'Unknown';
-
-        const roleSelect = editUserRolesForm.elements.roles;
-        for (let i = 0; i < roleSelect.options.length; i++) {
-            roleSelect.options[i].selected = (user.roles || []).includes(roleSelect.options[i].value);
-        }
-
-        showModal('edit-user-roles-modal');
-    }
-
-    function editUserIntents(userId) {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-
-        currentUserId = userId;
-        editUserIntentsForm.elements.userId.value = userId;
-        document.getElementById('user-email-intents').textContent = user.email || 'Unknown';
-
-        const intentSelect = editUserIntentsForm.elements.intents;
-        for (let i = 0; i < intentSelect.options.length; i++) {
-            intentSelect.options[i].selected = (user.intents || []).includes(intentSelect.options[i].value);
-        }
-
-        showModal('edit-user-intents-modal');
-    }
-
-    async function loadUsers() {
+    window.loadUsers = async function() {
         const response = await fetch('/api/admin/users');
         const data = await response.json();
         if (data.success) {
-            users = data.data;
+            window.users = data.data;
             renderUsers();
         }
     }
 
     function renderUsers() {
         const filteredUsers = userSearch.value ?
-            users.filter(user =>
+            window.users.filter(user =>
                 user.email && user.email.toLowerCase().includes(userSearch.value.toLowerCase())
-            ) : users;
+            ) : window.users;
 
         usersTable.innerHTML = filteredUsers.map(user => `
         <tr class="border-t border-zinc-800">
@@ -251,8 +188,8 @@
 
         const data = await response.json();
         if (data.success) {
-            await loadRoles();
-            hideModal('create-role-modal');
+            await window.loadRoles();
+            window.hideModal('create-role-modal');
             createRoleForm.reset();
         } else {
             alert('Failed to create role: ' + (data.message || 'Unknown error'));
@@ -282,8 +219,8 @@
 
         const data = await response.json();
         if (data.success) {
-            await loadRoles();
-            hideModal('edit-role-modal');
+            await window.loadRoles();
+            window.hideModal('edit-role-modal');
         } else {
             alert('Failed to update role: ' + (data.message || 'Unknown error'));
         }
@@ -295,7 +232,7 @@
         const userId = formData.get('userId');
         const selectedRoles = Array.from(formData.getAll('roles'));
 
-        const user = users.find(u => u.id === userId);
+        const user = window.users.find(u => u.id === userId);
         if (!user) return;
 
         const response = await fetch(`/api/admin/users/${userId}`, {
@@ -309,8 +246,8 @@
 
         const data = await response.json();
         if (data.success) {
-            await loadUsers();
-            hideModal('edit-user-roles-modal');
+            await window.loadUsers();
+            window.hideModal('edit-user-roles-modal');
         } else {
             alert('Failed to update user roles: ' + (data.message || 'Unknown error'));
         }
@@ -322,7 +259,7 @@
         const userId = formData.get('userId');
         const selectedIntents = Array.from(formData.getAll('intents'));
 
-        const user = users.find(u => u.id === userId);
+        const user = window.users.find(u => u.id === userId);
         if (!user) return;
 
         const response = await fetch(`/api/admin/users/${userId}`, {
@@ -336,8 +273,8 @@
 
         const data = await response.json();
         if (data.success) {
-            await loadUsers();
-            hideModal('edit-user-intents-modal');
+            await window.loadUsers();
+            window.hideModal('edit-user-intents-modal');
         } else {
             alert('Failed to update user intents: ' + (data.message || 'Unknown error'));
         }
@@ -346,4 +283,67 @@
     userSearch.addEventListener('input', renderUsers);
 
     initialize();
-})()
+})();
+
+window.editRole = function(id) {
+    const role = window.roles.find(r => r.id === id);
+    if (!role) return;
+
+    const editRoleForm = document.getElementById('edit-role-form');
+    editRoleForm.elements.id.value = id;
+    editRoleForm.elements.name.value = role.name;
+    editRoleForm.elements.level.value = role.level;
+
+    const intentSelect = editRoleForm.elements.intents;
+    for (let i = 0; i < intentSelect.options.length; i++) {
+        intentSelect.options[i].selected = role.intents.includes(intentSelect.options[i].value);
+    }
+
+    window.showModal('edit-role-modal');
+};
+
+window.deleteRole = async function(id) {
+    if (!confirm('Are you sure you want to delete this role?')) return;
+
+    const response = await fetch(`/api/admin/roles/${id}`, {
+        method: 'DELETE'
+    });
+    const data = await response.json();
+    if (data.success) {
+        await window.loadRoles();
+    } else {
+        alert('Failed to delete role: ' + (data.message || 'Unknown error'));
+    }
+};
+
+window.editUserRoles = function(userId) {
+    const user = window.users.find(u => u.id === userId);
+    if (!user) return;
+
+    const editUserRolesForm = document.getElementById('edit-user-roles-form');
+    editUserRolesForm.elements.userId.value = userId;
+    document.getElementById('user-email').textContent = user.email || 'Unknown';
+
+    const roleSelect = editUserRolesForm.elements.roles;
+    for (let i = 0; i < roleSelect.options.length; i++) {
+        roleSelect.options[i].selected = (user.roles || []).includes(roleSelect.options[i].value);
+    }
+
+    window.showModal('edit-user-roles-modal');
+};
+
+window.editUserIntents = function(userId) {
+    const user = window.users.find(u => u.id === userId);
+    if (!user) return;
+
+    const editUserIntentsForm = document.getElementById('edit-user-intents-form');
+    editUserIntentsForm.elements.userId.value = userId;
+    document.getElementById('user-email-intents').textContent = user.email || 'Unknown';
+
+    const intentSelect = editUserIntentsForm.elements.intents;
+    for (let i = 0; i < intentSelect.options.length; i++) {
+        intentSelect.options[i].selected = (user.intents || []).includes(intentSelect.options[i].value);
+    }
+
+    window.showModal('edit-user-intents-modal');
+};
