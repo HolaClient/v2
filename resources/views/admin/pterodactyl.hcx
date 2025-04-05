@@ -154,13 +154,13 @@ data = (req) => (
                         </button>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="flex flex-col justify-between h-full">
                         <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 mb-4">
                             <input type="text" id="node-search" placeholder="Search nodes..."
                                 class="w-full p-2 bg-zinc-800/50 text-zinc-100 rounded-lg border border-zinc-700 outline-none" />
                         </div>
 
-                        <div id="nodes-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div id="nodes-list-container" class="w-full gap-4 h-full">
                             <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 flex flex-col">
                                 <div class="text-center text-zinc-400 py-8">Loading configured nodes...</div>
                             </div>
@@ -236,8 +236,8 @@ data = (req) => (
                                             <input type="text" id="node-image" name="image" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
                                         </div>
                                         <div class="flex flex-col gap-2">
-                                            <label class="text-zinc-400 text-sm">Fee Multiplier (1.0 = no fee)</label>
-                                            <input type="number" id="node-fee" name="fee" step="0.01" min="1" value="1.0" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
+                                            <label class="text-zinc-400 text-sm">Fee (0 for free)</label>
+                                            <input type="number" id="node-fee" name="fee" value="0" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="text-zinc-400 text-sm">Description</label>
@@ -263,13 +263,13 @@ data = (req) => (
                         </button>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="flex flex-col justify-between h-full">
                         <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 mb-4">
                             <input type="text" id="software-search" placeholder="Search software..."
                                 class="w-full p-2 bg-zinc-800/50 text-zinc-100 rounded-lg border border-zinc-700 outline-none" />
                         </div>
 
-                        <div id="softwares-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div id="softwares-list-container" class="w-full h-full gap-4">
                             <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 flex flex-col">
                                 <div class="text-center text-zinc-400 py-8">Loading configured software...</div>
                             </div>
@@ -345,8 +345,8 @@ data = (req) => (
                                             <input type="text" id="software-image" name="image" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
                                         </div>
                                         <div class="flex flex-col gap-2">
-                                            <label class="text-zinc-400 text-sm">Fee Multiplier (1.0 = no fee)</label>
-                                            <input type="number" id="software-fee" name="fee" step="0.01" min="1" value="1.0" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
+                                            <label class="text-zinc-400 text-sm">Fee (0 for free)</label>
+                                            <input type="number" id="software-fee" name="fee" value="0" class="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-2 outline-none" />
                                         </div>
                                         <div class="flex flex-col gap-2">
                                             <label class="text-zinc-400 text-sm">Description</label>
