@@ -50,32 +50,6 @@
     let tabs = ['appearance', 'location', 'node', 'resources', 'finalize'];
     let currentTabIndex = 0;
 
-    for (let i of deployData.locations) {
-        locationsContainer.innerHTML += `
-        <div class="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 cursor-pointer hover:border-zinc-600 transition-all flex items-center space-x-4 h-fit">
-                                    <img src="${i.image}" alt="${i.name}" class="w-auto h-10 rounded-lg">
-                                    <div class="flex flex-col h-fit">
-                                        <span class="text-zinc-200 font-medium">${i.name}</span>
-                                        <p class="text-zinc-400 text-sm">${i.country.iso2} - ${i.country.name}</p>
-                                    </div>
-                                </div>`;
-    }
-
-    for (let i of deployData.nodes) {
-        nodesContainer.innerHTML += `
-        <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 cursor-pointer hover:border-zinc-600 transition-all">
-                                    <div class="flex justify-between mb-2">
-                                        <span class="text-zinc-200 font-medium">${i.displayName}</span>
-                                        <span class="text-emerald-400 text-sm">${i.id}</span>
-                                    </div>
-                                    <p class="text-zinc-400 text-sm mb-2">${i.description}</p>
-                                    <div class="flex items-center space-x-4 text-sm text-zinc-400 w-full">
-                                        <span>${i.name}</span>
-                                        <span>Fee: ${i.fee}</span>
-                                    </div>
-                                </div>`;
-    }
-
     function switchTab(tabId) {
         let activeContent = document.getElementById(`content-${tabId}`);
 
@@ -258,9 +232,17 @@
                 let locationText = card.querySelector('.text-zinc-200.font-medium')?.textContent || '';
                 formData.location = locationText;
                 summaryElements.location.textContent = locationText || '-';
+                
+
+                filterNodesByLocation(locationText);
             });
         });
 
+
+        setupNodeCards();
+    }
+
+    function setupNodeCards() {
         let nodeCards = document.querySelectorAll('#nodes-container div[class*="cursor-pointer"]');
 
         nodeCards.forEach(card => {
@@ -275,9 +257,73 @@
 
                 let nodeText = card.querySelector('.text-zinc-200.font-medium')?.textContent || '';
                 formData.node = nodeText;
+                formData.nodeId = card.getAttribute('data-node-id');
                 summaryElements.node.textContent = nodeText || '-';
             });
         });
+    }
+
+    function filterNodesByLocation(locationName) {
+
+        nodesContainer.innerHTML = '';
+        
+
+        const selectedLocation = deployData.locations.find(loc => loc.name === locationName);
+        
+        if (!selectedLocation) {
+
+            nodesContainer.innerHTML = '<div class="col-span-3 text-center text-zinc-400 py-4">Please select a valid location first.</div>';
+            return;
+        }
+
+        const filteredNodes = deployData.nodes.filter(node => {
+            return node.location.id === selectedLocation.id || 
+                   String(node.location.id) === String(selectedLocation.id);
+        });
+        
+        
+        if (filteredNodes.length === 0) {
+
+            nodesContainer.innerHTML = '<div class="col-span-3 text-center text-zinc-400 py-4">No nodes available in this location.</div>';
+            return;
+        }
+        
+
+        for (let node of filteredNodes) {
+            nodesContainer.innerHTML += `
+            <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 cursor-pointer hover:border-zinc-600 transition-all" data-node-id="${node.id}">
+                <div class="flex justify-between mb-2">
+                    <span class="text-zinc-200 font-medium">${node.displayName || node.name}</span>
+                    <span class="text-emerald-400 text-sm">${node.id}</span>
+                </div>
+                <p class="text-zinc-400 text-sm mb-2">${node.description || 'No description provided'}</p>
+                <div class="flex items-center space-x-4 text-sm text-zinc-400 w-full">
+                    <span>${node.name}</span>
+                    <span>Fee: ${node.fee || '0'}</span>
+                </div>
+            </div>`;
+        }
+        
+
+        setupNodeCards();
+    }
+
+    function populateLocations() {
+        locationsContainer.innerHTML = '';
+        for (let i of deployData.locations) {
+            locationsContainer.innerHTML += `
+            <div class="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 cursor-pointer hover:border-zinc-600 transition-all flex items-center space-x-4 h-fit">
+                <img src="${i.image}" alt="${i.name}" class="w-auto h-10 rounded-lg">
+                <div class="flex flex-col h-fit">
+                    <span class="text-zinc-200 font-medium">${i.name}</span>
+                    <p class="text-zinc-400 text-sm">${i.country.iso2} - ${i.country.name}</p>
+                </div>
+            </div>`;
+        }
+    }
+
+    function initializeNodeContainer() {
+        nodesContainer.innerHTML = '<div class="col-span-3 text-center text-zinc-400 py-4">Please select a location first to see available nodes.</div>';
     }
 
     let serverNameInput = document.getElementById('server-name');
@@ -298,7 +344,8 @@
     document.getElementById('prev-resources')?.addEventListener('click', () => switchTab('resources'));
 
     if (deployButton) {
-        deployButton.addEventListener('click', () => {
+        deployButton.addEventListener('click', async () => {
+
             if (!formData.name) {
                 alert('Please enter a server name.');
                 switchTab('appearance');
@@ -317,7 +364,60 @@
                 return;
             }
 
-            alert('Server deployment initiated! Your server will be ready shortly.');
+
+            deployButton.disabled = true;
+            const originalButtonText = deployButton.innerHTML;
+            deployButton.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Processing...</span>
+            `;
+
+            try {
+
+                const serverData = {
+                    name: formData.name,
+                    description: formData.description || '',
+                    nodeId: formData.nodeId,
+                    location: formData.location,
+                    resources: {
+                        cpu: formData.cpu * 100,
+                        memory: formData.ram * 1024,
+                        storage: formData.storage * 1024,
+                        allocations: parseInt(formData.allocations) || 1,
+                        backups: parseInt(formData.backups) || 0,
+                        databases: parseInt(formData.databases) || 0
+                    }
+                };
+
+
+                const response = await fetch('/api/client/deploy', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ server: serverData })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+
+                    alert('Server deployment successful! Redirecting to your new server...');
+                    window.location.href = `/servers/${result.data.identifier || result.data.id}`;
+                } else {
+
+                    alert(`Deployment failed: ${result.error || 'Unknown error occurred'}`);
+                    deployButton.disabled = false;
+                    deployButton.innerHTML = originalButtonText;
+                }
+            } catch (error) {
+                alert('Failed to deploy server. Please try again or contact support.');
+                deployButton.disabled = false;
+                deployButton.innerHTML = originalButtonText;
+            }
         });
     }
 
@@ -336,6 +436,8 @@
         updateSummary();
     });
 
+    populateLocations();
+    initializeNodeContainer();
     setupSelectionCards();
     switchTab('appearance');
 
