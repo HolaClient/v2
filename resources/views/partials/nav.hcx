@@ -4,11 +4,13 @@ module.exports = () => {
             <nav class="w-full md:pl-20 fixed z-20">
                 <div class="w-full h-full py-3 px-4 bg-zinc-900/50 backdrop-blur-md z-40 flex items-center justify-between border-b border-black ring-1 ring-zinc-800">
                     <div class="w-max h-full flex items-center justify-center">
-                        <button id="sidebarToggleButton" aria-label="Toggle sidebar" onclick="toggleSidebar()" class="rounded-xl mr-4 z-50 bg-zinc-900 p-2 border border-black ring-1 ring-zinc-800 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-950/20 duration-300 transition-all">
+                        <button id="sidebarToggleButton" aria-label="Toggle sidebar" onclick="toggleSidebar()" class="rounded-xl mr-4 z-50 bg-zinc-900 p-2 border border-black ring-1 ring-zinc-800 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-950/20 duration-300 transition-all hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 rotate-180" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
                             </svg>
                         </button>
+                        <img src="${hc.settings.branding.logo.url}" alt="" class="h-8 w-auto md:hidden" />
+                        <span class="hidden md:block text-zinc-100 text-lg font-semibold ml-2">${hc.settings.branding.name}</span>
                     </div>
                     <div class="w-max h-full flex items-center space-x-2">
                         <button aria-label="Select language" class="p-1.5 relative flex items-center text-sm bg-zinc-900 hover:text-zinc-300 hover:bg-zinc-950/20 duration-300 transition-all border border-black text-zinc-400 ring-1 ring-zinc-800 rounded-xl">

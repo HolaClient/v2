@@ -13,7 +13,7 @@ data = (req, layout) => (
         <body class="bg-black text-gray-100 h-screen w-screen overflow-x-hidden relative">
             ${aside(req)}
             ${nav()}
-            <main class="relative ml-20 w-full h-screen overflow-y-auto pt-20 p-4 pr-24">
+            <main class="relative md:ml-20 w-full h-screen overflow-y-auto pt-20 pb-20 md:pb-0 p-4 md:pr-24">
                 ${layout.content}
             </main>
         </body>

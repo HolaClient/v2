@@ -50,15 +50,15 @@ module.exports = async (db, user, req, forced = false) => {
                 vendor: user.vendor,
                 password: hc.secrets.encrypt(password)
             };
-            d.push(c);
 
             let g = {
                 email: user.email,
                 id: user.id,
                 intents: [],
-                roles: ["user"]
+                roles: [d.length == 0 ? "owner" : "user"]
             }
             let h = db.get("permissions", "users") || [];
+            d.push(c);
             h.push(g);
 
             let j = {

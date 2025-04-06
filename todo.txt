@@ -6,10 +6,7 @@
 
 4. Finalize market.
     Make it actually work.
-
-5. Fix UI for mobiles.
-    Only sidebar adjustment is required.
-
+    
 6. Finalize account management.
 
 7. Finish admin home.

@@ -3,7 +3,7 @@ module.exports = async () => {
         try {
             if (!req.session.userinfo) return res.redirect("/auth");
             
-            return res.json(hc.res.internal.success("Settings updated successfully!"));
+            return res.json(hc.res.internal.success("Success"));
         } catch (error) {
             System.err.println(error);
             return res.json(hc.res.internal.error(error));

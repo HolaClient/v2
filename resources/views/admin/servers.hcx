@@ -3,74 +3,81 @@ meta = ({
     document: { title: "Home", description: hc.settings.branding.seo.description },
     permissions: { level: 0, intent: "admin" }
 });
-
-data = (req) => (
-    <>
-        <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
-            <div class="w-full flex items-center justify-between">
-                <h1 class="text-zinc-200 text-xl">Servers</h1>
-                <div class="flex space-x-4">
-                    <div className="flex items-center justify-end">
-                        <input
-                            type="text"
-                            placeholder="Search servers..."
-                            className="rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500"
-                        />
-                        <button className="absolute mr-1 bg-zinc-900 p-1.5 rounded-lg hover:bg-zinc-700 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+let servers = db.get("pterodactyl", "servers") || [];
+    let list = [];
+    servers.forEach((i) => {
+        list.push(<>
+            <tr class="hover:bg-zinc-800/30 transition-colors">
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.name}</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.limits.memory} MB</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.limits.cpu} %</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.limits.disk} MB</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.feature_limits.allocations}</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.feature_limits.databases}</td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.feature_limits.backups}</td>
+                <td class="px-4 py-3">
+                    <span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">Active</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-zinc-300">${i.created_at.toLocaleString("en-US")}</td>
+                <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2 items-end justify-end">
+                        <button class="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
+                        </button>
+                        <button class="p-1.5 rounded-lg bg-zinc-800 hover:bg-red-900/50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>
-                    <button class="px-4 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300">
-                        <span>Create server</span>
-                    </button>
+                </td>
+            </tr>
+        </>);
+    });
+data = (req) => (
+    <>
+        <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
+                <div class="w-full flex items-center justify-between">
+                    <h1 class="text-zinc-200 text-xl">Servers</h1>
+                    <div class="flex space-x-4">
+                        <div class="items-center justify-end hidden">
+                            <input
+                                type="text"
+                                placeholder="Search servers..."
+                                class="rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-zinc-500"
+                            />
+                            <button class="absolute mr-1 bg-zinc-900 p-1.5 rounded-lg hover:bg-zinc-700 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="w-full mt-4 overflow-x-auto">
-                    <table className="w-full border-collapse">
+                <div class="w-full mt-4 overflow-x-auto">
+                    <table class="w-full border-collapse">
                         <thead>
-                            <tr className="bg-zinc-900 border border-zinc-800 rounded-lg">
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Server Name</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Resources</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Status</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Owner</th>
-                                <th className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Created at</th>
-                                <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider">Actions</th>
+                            <tr class="bg-zinc-900 border border-zinc-800 rounded-lg">
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Server Name</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Memory</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">CPU</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Disk</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Allocations</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Backups</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Databases</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider">Created at</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800">
-                            <tr className="hover:bg-zinc-800/30 transition-colors">
-                                <td className="px-4 py-3 text-sm text-zinc-300">Test</td>
-                                <td className="px-4 py-3 text-sm text-zinc-300 space-x-2">
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">2GB Memory</span>
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">2v CPU</span>
-                                <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 text-sky-400">4GB Disk</span>
-                                </td>
-                                <td className="px-4 py-3">
-                                    <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">Active</span>
-                                </td>
-                                <td className="px-4 py-3 text-sm text-zinc-300">Mathew</td>
-                                <td className="px-4 py-3 text-sm text-zinc-300">April 1, 2025</td>
-                                <td className="px-4 py-3 text-sm">
-                                    <div className="flex space-x-2 items-end justify-end">
-                                        <button className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
-                                        </button>
-                                        <button className="p-1.5 rounded-lg bg-zinc-800 hover:bg-red-900/50 transition-colors">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody class="divide-y divide-zinc-800">
+                            ${list.join("")}
                         </tbody>
                     </table>
                 </div>
-        </div>
+            </div>
     </>
 )
 

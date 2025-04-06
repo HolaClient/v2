@@ -6,7 +6,13 @@ meta = ({
 
 data = (req) => (
     <>
-        
+        <div class="w-full h-full grid grid-cols-2 gap-4">
+            <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
+                <h1 class="text-2xl font-bold text-zinc-50">Links</h1>
+                <p class="text-zinc-400">Earn coins by completing short links.</p>
+                
+            </div>
+        </div>
         <script src="/assets/client/economy.js"></script>
     </>
 )

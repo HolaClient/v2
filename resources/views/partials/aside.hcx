@@ -1,14 +1,20 @@
 module.exports = (req) => {
+    let permissions = db.get("permissions", "users");
+    let user = permissions.find((user) => user.email == req.session.userinfo.email);
+    let isAdmin = false;
+    if (user) {
+        isAdmin = user.roles.includes("admin") || user.roles.includes("owner");
+    }
     return (
         <>
-            <aside id="sidebar" class="w-20 z-30 fixed bg-zinc-950/50 backdrop-blur-lg md:bg-zinc-900/50 border-r border-zinc-800 h-screen top-0 bottom-0 shadow-inner shadow-black">
-                <div class="w-full z-50 flex px-3 py-2 my-[1.5px] items-center">
+            <aside id="sidebar" class="w-screen md:w-20 z-30 fixed bg-zinc-950/50 backdrop-blur-lg md:bg-zinc-900/50 border-r border-zinc-800 md:h-screen md:top-0 left-0 bottom-0 shadow-inner shadow-black">
+                <div class="w-full z-50 px-3 py-2 my-[1.5px] items-center hidden md:flex">
                     <div class="w-full flex items-center justify-center space-x-2">
                         <img src="${hc.settings.branding.logo.url}" alt="" class="h-10 w-auto" />
                     </div>
                 </div>
                 <div class="w-full bg-zinc-800 shadow shadow-black h-px"></div>
-                <div class="w-full -mt-20 px-2 h-full text-center flex flex-col items-center justify-center space-y-2">
+                <div class="w-full md:-mt-20 px-2 h-full text-center flex md:flex-col items-center justify-center space-y-2">
                     <a href="${req.url == '/home' ? '' : '/home'}" class="flex flex-col items-center w-full border ${req.url == '/home' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -21,13 +27,13 @@ module.exports = (req) => {
                         </svg>
                         <span>Servers</span>
                     </a>
-                    <a href="${req.url == '/economy' ? '' : '/economy'}" class="flex flex-col items-center w-full border ${req.url == '/economy' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer">
+                    <a href="${req.url == '/economy' ? '' : '/economy'}" class="flex flex-col items-center w-full border ${req.url == '/economy' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                         </svg>
                         <span>Economy</span>
                     </a>
-                    <a href="${req.url == '/market' ? '' : '/market'}" class="flex flex-col items-center w-full border ${req.url == '/market' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer">
+                    <a href="${req.url == '/market' ? '' : '/market'}" class="flex flex-col items-center w-full border ${req.url == '/market' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
                         </svg>
@@ -39,14 +45,14 @@ module.exports = (req) => {
                         </svg>
                         <span>Account</span>
                     </a>
-                    <a href="/admin" class="flex flex-col items-center w-full border ${req.url == '/admin' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer">
+                    ${isAdmin ? `<a href="/admin" class="flex flex-col items-center w-full border ${req.url == '/admin' ? 'text-zinc-100 bg-zinc-900 border-zinc-800' : 'text-zinc-400 border-transparent hover:text-zinc-300 hover:bg-zinc-950/40 hover:ring-2 ring-zinc-900/80'} rounded-lg text-xs p-2 duration-300 transition-all cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
                         </svg>
                         <span>Admin</span>
-                    </a>
+                    </a>` : ''}
                 </div>
-                <div class="w-full py-4 absolute pr-px bottom-0 border-t border-zinc-800 z-20">
+                <div class="w-full py-4 absolute pr-px bottom-0 border-t border-zinc-800 z-20 hidden md:block">
                     <div class="flex px-4 justify-between w-full items-center">
                         <div class="w-full h-full flex items-center justify-center space-x-2">
                             <img src="${req.session.userinfo.avatar}" alt="" class="size-10 rounded-xl" />
