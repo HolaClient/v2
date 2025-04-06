@@ -11,6 +11,7 @@
 
     let locationsContainer = document.getElementById('locations-container');
     let nodesContainer = document.getElementById('nodes-container');
+    let softwareContainer = document.getElementById('software-container');
 
     let sliders = {
         cpu: document.getElementById('cpu-slider'),
@@ -28,9 +29,13 @@
         name: document.getElementById('summary-name'),
         location: document.getElementById('summary-location'),
         node: document.getElementById('summary-node'),
+        software: document.getElementById('summary-software'),
         cpu: document.getElementById('summary-cpu'),
         ram: document.getElementById('summary-ram'),
         storage: document.getElementById('summary-storage'),
+        allocations: document.getElementById('summary-allocations'),
+        backups: document.getElementById('summary-backups'),
+        databases: document.getElementById('summary-databases'),
         cost: document.getElementById('summary-cost')
     };
 
@@ -39,15 +44,16 @@
         description: '',
         location: '',
         node: '',
+        software: '',
         cpu: (deployData?.resources?.cpu / 100) ?? 1,
         ram: (deployData?.resources?.memory / 1024) ?? 1,
-        storage: (deployData?.resources?.storage / 1024) ?? 25,
+        storage: (deployData?.resources?.storage / 1024) ?? 1,
         allocations: deployData?.resources?.allocations ?? 1,
         backups: deployData?.resources?.backups ?? 0,
         databases: deployData?.resources?.databases ?? 0,
     };
 
-    let tabs = ['appearance', 'location', 'node', 'resources', 'finalize'];
+    let tabs = ['appearance', 'location', 'node', 'software', 'resources', 'finalize'];
     let currentTabIndex = 0;
 
     function switchTab(tabId) {
@@ -112,9 +118,13 @@
 
         summaryElements.location.textContent = formData.location || '-';
         summaryElements.node.textContent = formData.node || '-';
+        summaryElements.software.textContent = formData.software || '-';
         summaryElements.cpu.textContent = `${formData.cpu} Cores`;
         summaryElements.ram.textContent = `${formData.ram} GB`;
         summaryElements.storage.textContent = `${formData.storage} GB`;
+        summaryElements.allocations.textContent = formData.allocations || '-';
+        summaryElements.backups.textContent = formData.backups || '-';
+        summaryElements.databases.textContent = formData.databases || '-';
     }
 
     tabButtons.forEach(button => {
@@ -203,11 +213,9 @@
     if (inputs.storage) {
         inputs.storage.addEventListener('input', () => {
             let value = parseInt(inputs.storage.value);
-            if (isNaN(value)) value = 25;
-            if (value < 25) value = 25;
+            if (isNaN(value)) value = 1;
+            if (value < 1) value = 1;
             if (value > 500) value = 500;
-
-            value = Math.round(value / 25) * 25;
 
             sliders.storage.value = value;
             document.getElementById('storage-value').textContent = `${value} GB`;
@@ -230,7 +238,7 @@
                 card.classList.add('border-emerald-500', 'bg-emerald-500/10');
 
                 let locationText = card.querySelector('.text-zinc-200.font-medium')?.textContent || '';
-                formData.location = locationText;
+                formData.location = card.getAttribute('data-location-id');;
                 summaryElements.location.textContent = locationText || '-';
                 
 
@@ -312,11 +320,11 @@
         locationsContainer.innerHTML = '';
         for (let i of deployData.locations) {
             locationsContainer.innerHTML += `
-            <div class="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 cursor-pointer hover:border-zinc-600 transition-all flex items-center space-x-4 h-fit">
+            <div class="relative bg-zinc-900/50 border border-zinc-800 rounded-lg p-3 cursor-pointer hover:border-zinc-600 transition-all flex items-center space-x-4 h-fit" data-location-id="${i.id}">
                 <img src="${i.image}" alt="${i.name}" class="w-auto h-10 rounded-lg">
                 <div class="flex flex-col h-fit">
                     <span class="text-zinc-200 font-medium">${i.name}</span>
-                    <p class="text-zinc-400 text-sm">${i.country.iso2} - ${i.country.name}</p>
+                    <p class="text-zinc-400 text-sm">${i.country.iso2} - ${i.country.name}, ${i.id}</p>
                 </div>
             </div>`;
         }
@@ -324,6 +332,48 @@
 
     function initializeNodeContainer() {
         nodesContainer.innerHTML = '<div class="col-span-3 text-center text-zinc-400 py-4">Please select a location first to see available nodes.</div>';
+    }
+
+    function populateSoftware() {
+        softwareContainer.innerHTML = '';
+        
+        if (!deployData.eggs || deployData.eggs.length === 0) {
+            softwareContainer.innerHTML = '<div class="col-span-3 text-center text-zinc-400 py-4">No software options available.</div>';
+            return;
+        }
+        
+        for (let software of deployData.eggs) {
+            softwareContainer.innerHTML += `
+            <div class="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 cursor-pointer hover:border-zinc-600 transition-all" data-software-id="${software.id}">
+                <div class="flex justify-between mb-2">
+                    <span class="text-zinc-200 font-medium">${software.name}</span>
+                </div>
+                <p class="text-zinc-400 text-sm mb-2">${software.description || 'No description provided'}</p>
+            </div>`;
+        }
+        
+        setupSoftwareCards();
+    }
+    
+    function setupSoftwareCards() {
+        let softwareCards = document.querySelectorAll('#software-container div[class*="cursor-pointer"]');
+        
+        softwareCards.forEach(card => {
+            card.addEventListener('click', () => {
+                softwareCards.forEach(c => {
+                    c.classList.remove('border-emerald-500', 'bg-emerald-500/10');
+                    c.classList.add('border-zinc-800', 'bg-zinc-900/50');
+                });
+                
+                card.classList.remove('border-zinc-800', 'bg-zinc-900/50');
+                card.classList.add('border-emerald-500', 'bg-emerald-500/10');
+                
+                let softwareName = card.querySelector('.text-zinc-200.font-medium')?.textContent || '';
+                formData.software = softwareName;
+                formData.softwareId = card.getAttribute('data-software-id');
+                summaryElements.software.textContent = softwareName || '-';
+            });
+        });
     }
 
     let serverNameInput = document.getElementById('server-name');
@@ -380,12 +430,13 @@
                 const serverData = {
                     name: formData.name,
                     description: formData.description || '',
-                    nodeId: formData.nodeId,
+                    node: formData.nodeId,
                     location: formData.location,
+                    software: formData.softwareId,
                     resources: {
                         cpu: formData.cpu * 100,
                         memory: formData.ram * 1024,
-                        storage: formData.storage * 1024,
+                        disk: formData.storage * 1024,
                         allocations: parseInt(formData.allocations) || 1,
                         backups: parseInt(formData.backups) || 0,
                         databases: parseInt(formData.databases) || 0
@@ -404,9 +455,7 @@
                 const result = await response.json();
 
                 if (result.success) {
-
-                    alert('Server deployment successful! Redirecting to your new server...');
-                    window.location.href = `/servers/${result.data.identifier || result.data.id}`;
+                    window.location.href = `/servers/${result.data.identifier}`;
                 } else {
 
                     alert(`Deployment failed: ${result.error || 'Unknown error occurred'}`);
@@ -438,6 +487,7 @@
 
     populateLocations();
     initializeNodeContainer();
+    populateSoftware();
     setupSelectionCards();
     switchTab('appearance');
 

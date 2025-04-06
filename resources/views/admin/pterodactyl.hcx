@@ -222,6 +222,7 @@ data = (req) => (
                             <div class="p-4">
                                 <form id="node-form">
                                     <input type="hidden" id="node-id" name="id" />
+                                    <input type="hidden" id="node-details" name="details" />
                                     <div class="space-y-4">
                                         <div class="flex flex-col gap-2">
                                             <label class="text-zinc-400 text-sm">Node Name</label>

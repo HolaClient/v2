@@ -1,8 +1,6 @@
 1. Co-relate nodes and locations in deploy.
     Show filtered nodes from selected location.
 
-2. Finish deployment function.
-
 3. Finish Economy features.
     a. Add J4R.
     b. Add Linkpays.
@@ -31,3 +29,5 @@
 
 11. Add search functionality.
      Pages searching is enough for now.
+
+12. Eliminate extra function calls in backend deploy.js

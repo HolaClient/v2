@@ -46,14 +46,14 @@ module.exports = {
         "sendCommand": async function (a, b) {
             return await servers.sendCommand(settings, a, b) || { success: false, error: 0 }
         },
-        "create": async function (a, b) {
-            return await servers.createServer(settings, a, b) || { success: false, error: 0 }
+        "create": async function (a) {
+            return await servers.create(settings, a) || { success: false, error: 0 }
         },
         "delete": async function (a, b) {
-            return await servers.deleteServer(settings, a, b) || { success: false, error: 0 }
+            return await servers.delete(settings, a, b) || { success: false, error: 0 }
         },
         "update": async function (a, b) {
-            return await servers.updateServer(settings, a, b) || { success: false, error: 0 }
+            return await servers.update(settings, a, b) || { success: false, error: 0 }
         }
     },
     "nodes": {

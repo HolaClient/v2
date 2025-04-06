@@ -1,0 +1,15 @@
+{
+  "name": "hcw",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "install": "node bindings/node/scripts/build.js",
+    "prebuild": "node bindings/node/scripts/build-symmap.js",
+    "build": "node-gyp rebuild",
+    "postbuild": "node bindings/node/scripts/copy-addon.js"
+  },
+  "dependencies": {
+    "node-addon-api": "^5.1.0",
+    "tar": "^7.4.3"
+  }
+}

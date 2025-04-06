@@ -80,7 +80,9 @@ module.exports = function (a, b) {
             return { success: true, code: 200 };
         }
 
-        if (i.required === true && c !== undefined && c !== null) {
+        if (i.required === true && c == undefined || c == null) {
+            return error(`This field is required!`);
+        } else {
             if (i.type == "number") {
                 c = parseFloat(c);
                 if (isNaN(c)) return error();
@@ -127,8 +129,6 @@ module.exports = function (a, b) {
                 if (!d.success) return d;
             }
             b[i.pointer] = c;
-        } else {
-            return error(`This field is required!`);
         }
     }
     return { success: true, code: 200, data: b };

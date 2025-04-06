@@ -120,13 +120,15 @@
         let description = getElement("node-description").value;
 
         let nodes = configured.nodes || [];
+        let pteroNode = pterodactyl.nodes.find(node => node.attributes.id == parseInt(id));
         let node = {
             id,
             name,
             displayName,
             image,
             fee,
-            description
+            description,
+            location: pteroNode ? pteroNode.attributes.relationships.location.attributes : null
         };
 
         let existingNodeIndex = nodes.findIndex(n => n.id === id);
@@ -773,8 +775,9 @@ function editNode(id) {
     getElement('node-name').value = node.name;
     getElement('node-display-name').value = node.displayName || '';
     getElement('node-image').value = node.image || '';
-    getElement('node-fee').value = node.fee || 1.0;
+    getElement('node-fee').value = node.fee || 0;
     getElement('node-description').value = node.description || '';
+    getElement('node-details').value = node.location || pterodactyl.nodes.find(n => n.attributes.id == parseInt(node.id)).attributes.relationships.location.attributes || '';
 }
 
 function deleteNode(id) {

@@ -1,0 +1,31 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 2080,
+        "backlog_size": 65535,
+        "max_connections": 69696969,
+        "max_request_size": 8192,
+        "connection_timeout": 30000
+    },
+    "security": {
+        "rate_limit": {
+            "enabled": true,
+            "requests_per_minute": 60
+        },
+        "cors": {
+            "enabled": false,
+            "allow_origin": "http://localhost:3000"
+        }
+    },
+    "performance": {
+        "thread_pool": {
+            "min_threads": 4,
+            "max_threads": 10240,
+            "thread_timeout": 30000
+        },
+        "buffer_pool": {
+            "buffer_size": 16384,
+            "max_buffers": 10000
+        }
+    }
+}

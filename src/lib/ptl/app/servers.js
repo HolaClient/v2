@@ -189,6 +189,7 @@ async function create(pterodactyl, a) {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${pterodactyl.app}`,
                 },
                 body: JSON.stringify(a)
