@@ -1,0 +1,14 @@
+meta = ({
+    id: "index", async: false, layout: "client",
+    document: { title: "Economy", description: hc.settings.branding.seo.description },
+    permissions: { level: 0, intent: "home" }
+});
+
+data = (req) => (
+    <>
+        
+        <script src="/assets/client/economy.js"></script>
+    </>
+)
+
+module.exports = { meta, data };

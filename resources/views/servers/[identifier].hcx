@@ -1,0 +1,37 @@
+meta = ({
+    id: "index", async: false, layout: "client",
+    document: { title: "Servers", description: hc.settings.branding.seo.description },
+    permissions: { level: 0, intent: "home" }
+});
+
+data = (req, data) => {
+    let servers = db.get("servers", req.session.userinfo.email) || [];
+    let server = servers.find(i => i.identifier == data.params.identifier);
+    if (!server) {
+        return (<>
+            <div class="w-full rounded-xl bg-red-900/50 border border-red-800/80 p-4 text-center">
+                <h2 class="text-red-200 text-xl mb-2">Server Not Found</h2>
+                <p class="text-red-300">The requested server could not be found.</p>
+                <a href="/servers" class="inline-block mt-4 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors">
+                    Return to Servers
+                </a>
+            </div>
+            </>
+        );
+    }
+    
+    return (
+        <>
+            <div class="w-full rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <h1 class="text-zinc-200 text-2xl font-semibold">${server.name}</h1>
+                        <span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400">${server.status}</span>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+module.exports = { meta, data };
