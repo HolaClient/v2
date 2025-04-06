@@ -1,11 +1,8 @@
 module.exports = async () => {
     app.get("/api/admin/roles", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
-        let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.permissions.roles.view");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         let roles = db.get("permissions", "roles") || [];
         res.json({ success: true, data: roles });
@@ -13,11 +10,8 @@ module.exports = async () => {
 
     app.post("/api/admin/roles", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
-        let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.permissions.roles.create");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         const { name, level, intents } = req.body;
         if (!name || level === undefined || !intents) {
@@ -39,11 +33,8 @@ module.exports = async () => {
 
     app.put("/api/admin/roles/:id", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
-        let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.permissions.roles.edit");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         const { name, level, intents } = req.body;
         if (!name || level === undefined || !intents) {
@@ -69,11 +60,8 @@ module.exports = async () => {
 
     app.delete("/api/admin/roles/:id", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
-        let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.permissions.roles.delete");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         let roles = db.get("permissions", "roles") || [];
         const roleIndex = roles.findIndex(r => r.id === req.params.id);
@@ -89,10 +77,8 @@ module.exports = async () => {
     app.get("/api/admin/users", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
         let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.deploy.view");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         res.json({ success: true, data: perms });
     });
@@ -100,10 +86,8 @@ module.exports = async () => {
     app.put("/api/admin/users/:id", async (req, res) => {
         if (!req.session.userinfo) return res.redirect("/auth");
         let perms = db.get("permissions", "users");
-        let user = perms.find(i => i.email == req.session.userinfo.email);
-        if (!user || !user.roles.includes("admin") && !user.roles.includes("owner")) {
-            return res.status(403).json({ success: false, message: "Unauthorized" });
-        }
+        let status = await hc.modules.HCP.check.request(req, "hc.admin.deploy.view");
+        if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
         const { roles, intents } = req.body;
         if (!roles || !intents) {
