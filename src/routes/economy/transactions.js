@@ -11,8 +11,8 @@ module.exports = async () => {
                 });
             }
             
-            const userId = req.session.userinfo.id;
-            let transactions = await hc.database.find('economy_transactions', { userId });
+            const userId = req.session.userinfo.email;
+            let transactions = db.find('economy_transactions', { userId });
             
             transactions.sort((a, b) => b.timestamp - a.timestamp);
             
@@ -37,7 +37,7 @@ module.exports = async () => {
                 });
             }
             
-            const userId = req.session.userinfo.id;
+            const userId = req.session.userinfo.email;
             const balance = await economyUtils.getUserCoins(userId);
             
             return res.json({
