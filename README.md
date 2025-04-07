@@ -1,4 +1,5 @@
 # WARNING: Beta version, not recommended for production purposes!
 
-https://docs.holaclient.dev/
-https://policies.holaclient.dev/
+[Documentation](https://docs.holaclient.dev/)
+
+[Policies](https://policies.holaclient.dev/)
