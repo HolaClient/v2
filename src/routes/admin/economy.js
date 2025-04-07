@@ -30,7 +30,7 @@ module.exports = async () => {
             let status = await hc.modules.HCP.check.request(req, "hc.admin.economy.view");
             if (status.code !== 200) return res.json(hc.res.internal.forbidden());
 
-            let servers = await hc.database.find('economy_j4r_servers', {});
+            let servers = db.get('economy',' j4r_servers');
             
             return res.json({
                 success: true,
@@ -63,7 +63,9 @@ module.exports = async () => {
                 createdAt: Date.now()
             };
             
-            await hc.database.set('economy_j4r_servers', server.id, server);
+            let servers = db.get("economy", "j4r_servers") || [];
+            servers.push(server)
+            db.set('economy', 'j4r_servers', servers);
             
             return res.json({
                 success: true,
@@ -89,7 +91,8 @@ module.exports = async () => {
                 return res.json(hc.res.internal.error("Missing required fields"));
             }
 
-            const existingServer = await hc.database.get('economy_j4r_servers', id);
+            const servers = db.get('economy', 'j4r_servers');
+            let existingServer = servers.find(i => i.id == id)
             
             if (!existingServer) {
                 return res.json(hc.res.internal.error("Server not found"));
@@ -103,8 +106,9 @@ module.exports = async () => {
                 coinsReward: parseInt(coinsReward),
                 updatedAt: Date.now()
             };
+            existingServer = updatedServer
             
-            await hc.database.set('economy_j4r_servers', id, updatedServer);
+            db.set('economy', 'j4r_servers', servers);
             
             return res.json({
                 success: true,
@@ -124,7 +128,9 @@ module.exports = async () => {
 
             const { id } = req.params;
             
-            await hc.database.delete('economy_j4r_servers', id);
+            let servers = db.get("economy", "j4r_servers") || []
+            servers = servers.filter(i => i.id !== id);
+            db.set("economy", "j4r_servers", servers)
             
             return res.json({
                 success: true,
