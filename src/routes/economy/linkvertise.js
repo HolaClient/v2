@@ -65,8 +65,9 @@ module.exports = async () => {
             }
             
             const amount = parseInt(hc.settings.raw('economy.linkvertise.rewardPerLink') || 20);
-            
-            await economyUtils.addTransaction(userId, amount, "Completed Linkvertise link");
+            let users = db.get("users", "users") || [];
+            let user = users.find(i => i.id == userId);
+            await economyUtils.addTransaction(user ? user.email : userId, amount, "Completed Linkvertise link");
             
             return res.json(hc.res.internal.success("Reward added successfully"));
         } catch (error) {
