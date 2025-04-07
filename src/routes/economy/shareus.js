@@ -1,7 +1,7 @@
 module.exports = async () => {
     const economyUtils = require('../../utils/economy');
 
-    app.get('/api/economy/generate-link/linkpays', async (req, res) => {       
+    app.get('/api/economy/generate-link/shareus', async (req, res) => {       
         try {
             if (!req.session.userinfo) return res.redirect("/auth");
             
@@ -13,22 +13,22 @@ module.exports = async () => {
                 });
             }
 
-            const linkpaysEnabled = hc.settings.raw('economy.linkpays.enabled');
-            if (!linkpaysEnabled) {
+            const shareusEnabled = hc.settings.raw('economy.shareus.enabled');
+            if (!shareusEnabled) {
                 return res.json({
                     success: false,
-                    error: "Linkpays feature is disabled"
+                    error: "ShareUS feature is disabled"
                 });
             }
             
-            const apiKey = hc.settings.raw('economy.linkpays.apiKey');
+            const apiKey = hc.settings.raw('economy.shareus.apiKey');
             
             if (!apiKey) {
-                return res.json(hc.res.internal.error("Linkpays API key not configured"));
+                return res.json(hc.res.internal.error("ShareUS API key not configured"));
             }
             
             const userId = req.session.userinfo.id;
-            const link = `https://linkpays.net/${apiKey}/generate?user=${userId}`;
+            const link = `https://shareus.io/${apiKey}/generate?user=${userId}`;
             
             return res.json({
                 success: true,
@@ -36,11 +36,11 @@ module.exports = async () => {
             });
         } catch (error) {
             System.err.println(error);
-            return res.json(hc.res.internal.error("Failed to generate Linkpays link"));
+            return res.json(hc.res.internal.error("Failed to generate ShareUS link"));
         }
     });
 
-    app.post('/api/economy/webhooks/linkpays', async (req, res) => {       
+    app.post('/api/economy/webhooks/shareus', async (req, res) => {       
         try {
             const { userId } = req.body;
             
@@ -56,22 +56,22 @@ module.exports = async () => {
                 });
             }
 
-            const linkpaysEnabled = hc.settings.raw('economy.linkpays.enabled');
-            if (!linkpaysEnabled) {
+            const shareusEnabled = hc.settings.raw('economy.shareus.enabled');
+            if (!shareusEnabled) {
                 return res.json({
                     success: false,
-                    error: "Linkpays feature is disabled"
+                    error: "ShareUS feature is disabled"
                 });
             }
             
-            const amount = parseInt(hc.settings.raw('economy.linkpays.coinsPerLink') || 100);
+            const amount = parseInt(hc.settings.raw('economy.shareus.rewardPerLink') || 15);
             
-            await economyUtils.addTransaction(userId, amount, "Completed Linkpays link");
+            await economyUtils.addTransaction(userId, amount, "Completed ShareUS link");
             
             return res.json(hc.res.internal.success("Reward added successfully"));
         } catch (error) {
             System.err.println(error);
-            return res.json(hc.res.internal.error("Failed to process Linkpays webhook"));
+            return res.json(hc.res.internal.error("Failed to process ShareUS webhook"));
         }
     });
 }
