@@ -1,6 +1,6 @@
 const fs = require("fs"),
-crypto = require('crypto');
-    path = require("path");
+    path = require("path"),
+    crypto = require("crypto");
 
 let hashes = [
     "67DC8DA2A8E1F3777643C547D2C01967",
@@ -8,10 +8,10 @@ let hashes = [
     "85DD5BC9EC399C15E8EA2617F7D91702",
     "1DDDB75BE530B1AB9D578D8C8150421B"
 ]
+
 module.exports = async () => {
     const e = `${process.platform}_${process.arch}_${process.versions.modules}.node`,
         s = path.resolve(`./src/modules/HCW/bin/${e}`);
-        console.log(e)
     if (fs.existsSync(s)) return;
     const r = `https://cdn.holaclient.dev/binaries/ws/${e}`;
     try {
@@ -29,11 +29,14 @@ module.exports = async () => {
         const t = path.dirname(s);
         fs.existsSync(t) || fs.mkdirSync(t, { recursive: !0 });
         const o = await e.arrayBuffer();
-        const buffer = Buffer.from(o);
-        const MD5 = crypto.createHash('md5').update(buffer).digest('hex').toUpperCase();
-        if (!hashes.includes(MD5)) {
-            throw new Error(`File integrity check failed. MD5 hash: ${md5Hash} not in allowed list.`);
+        const i = Buffer.from(o);
+        const hash = crypto.createHash("md5").update(i).digest("hex").toUpperCase();
+        console.log(hash)
+        if (!hashes.includes(hash)) {
+            throw new Error(hash);
         }
-        fs.writeFileSync(s, buffer);
-    } catch (e) { }
+        fs.writeFileSync(s, i);
+    } catch (e) {
+        console.log(e)
+    }
 };
