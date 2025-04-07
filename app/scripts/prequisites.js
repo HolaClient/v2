@@ -3,6 +3,7 @@ const fs = require("fs"),
     crypto = require("crypto");
 
 let hashes = [
+    "A0AF76424F87C063CC432B16FA804061",
     "67DC8DA2A8E1F3777643C547D2C01967",
     "2A604DF425E838F383A9024FB46586AD",
     "85DD5BC9EC399C15E8EA2617F7D91702",
@@ -31,9 +32,8 @@ module.exports = async () => {
         const o = await e.arrayBuffer();
         const i = Buffer.from(o);
         const hash = crypto.createHash("md5").update(i).digest("hex").toUpperCase();
-        console.log(hash)
         if (!hashes.includes(hash)) {
-            throw new Error(hash);
+            throw new Error(`Hash mismatch: please use a different version of NodeJS or contact support.`);
         }
         fs.writeFileSync(s, i);
     } catch (e) {
