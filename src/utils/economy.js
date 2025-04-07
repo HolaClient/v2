@@ -1,11 +1,13 @@
 module.exports = {
     getUserCoins: async (userId) => {
-        const userCoins = await hc.database.get('user_coins', userId);
+        const userCoins = db.get('economy', userId);
         return userCoins ? userCoins.coins : 0;
     },
 
     updateUserCoins: async (userId, coins) => {
-        await hc.database.set('user_coins', userId, { coins });
+        let economy = db.get("economy", userId);
+        economy.coins = coins;
+        db.set('economy', userId, economy);
     },
 
     addTransaction: async (userId, amount, description) => {
@@ -17,11 +19,13 @@ module.exports = {
             timestamp: Date.now()
         };
         
-        await hc.database.set('economy_transactions', transaction.id, transaction);
+        db.set('economy_transactions', transaction.id, transaction);
         
-        const userCoins = await hc.database.get('user_coins', userId);
+        const userCoins = db.get('economy', userId);
         const currentCoins = userCoins ? userCoins.coins : 0;
-        await hc.database.set('user_coins', userId, { coins: currentCoins + amount });
+        let economy = db.get("economy", userId);
+        economy.coins = currentCoins + amount;
+        db.set('economy', userId, economy);
         
         return transaction;
     },
