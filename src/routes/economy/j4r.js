@@ -21,7 +21,7 @@ module.exports = async () => {
                 });
             }
             
-            let servers = await hc.database.find('economy_j4r_servers', {});
+            let servers = db.get('economy',' j4r_servers');
             
             return res.json({
                 success: true,
@@ -85,10 +85,10 @@ module.exports = async () => {
         if (!userId || !discordId) return;
         
         try {
-            const servers = await hc.database.find('economy_j4r_servers', {});
+            const servers = db.get('economy',' j4r_servers');
             if (!servers || servers.length === 0) return;
             
-            const userServersProcessed = await hc.database.get('j4r_processed', userId) || { servers: [] };
+            const userServersProcessed = db.get('j4r_processed', userId) || { servers: [] };
             
             for (const server of servers) {
                 if (userServersProcessed.servers.includes(server.id)) continue;
@@ -106,7 +106,7 @@ module.exports = async () => {
                 }
             }
             
-            await hc.database.set('j4r_processed', userId, userServersProcessed);
+            db.set('j4r_processed', userId, userServersProcessed);
         } catch (error) {
             System.err.println("Error checking user Discord servers:", error);
         }
