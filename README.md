@@ -6,8 +6,4 @@ Thank you to everyone who supported the project.
 
 ---
 
-# WARNING: Beta version, not recommended for production purposes!
-
-[Documentation](https://docs.holaclient.dev/)
-
-[Policies](https://policies.holaclient.dev/)
+[Documentation (archived)](https://docs.holaclient.dev/) [Policies (archived)](https://policies.holaclient.dev/)
