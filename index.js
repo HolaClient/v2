@@ -152,7 +152,7 @@ async function terminateExistingInstances(g) {
 */
 async function main() {
     try {
-        await require("./app/scripts/prequisites")();
+        //await require("./app/scripts/prequisites")();
         terminateExistingInstances(process.env.APP_PORT);
         System.out.println(chalk.brightCyan("+ ") + chalk.gray(`Loading application... [${getTime()}ms]`))
         require("./src/app")
