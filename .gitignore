@@ -1,8 +1,0 @@
-node_modules/
-storage/
-*.node
-.env
-public/common/
-/src/modules/HCF/config/tailwind.map
-/public/app.css
-package-lock.json
